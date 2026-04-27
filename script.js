@@ -1,72 +1,48 @@
-:root {
-    --bg-dark: #0a0a0a;
-    --card-bg: #161616;
-    --accent: #00e5ff; /* Tactical Cyan */
-    --text-main: #e0e0e0;
-    --border: #333;
+function openTab(evt, tabName) {
+    let content = document.getElementsByClassName("tab-content");
+    for (let i = 0; i < content.length; i++) content[i].style.display = "none";
+    
+    let links = document.getElementsByClassName("tab-link");
+    for (let i = 0; i < links.length; i++) links[i].className = links[i].className.replace(" active", "");
+    
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+    
+    if(tabName === 'models') fetchWeather();
 }
 
-body {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    overflow: hidden; /* Desktop feel */
+async function fetchWeather() {
+    const lat = 42.0411; // Evanston
+    const lon = -87.6901;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m&models=ecmwf_ifs04,gfs_seamless,jma_seamless,icon_seamless,gem_seamless,meteofrance_seamless,hrrr_conus,nam_conus&timezone=auto`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        document.getElementById('main-temp').innerText = `${Math.round(data.current_weather.temperature)}°`;
+        
+        const models = {
+            "HRRR (High-Res)": data.hourly.temperature_2m_hrrr_conus[0],
+            "NAM (Mesoscale)": data.hourly.temperature_2m_nam_conus[0],
+            "GFS (Global)": data.hourly.temperature_2m_gfs_seamless[0],
+            "ECMWF (Euro)": data.hourly.temperature_2m_ecmwf_ifs04[0],
+            "ICON (German)": data.hourly.temperature_2m_icon_seamless[0],
+            "GEM (Canadian)": data.hourly.temperature_2m_gem_seamless[0],
+            "ARPEGE (French)": data.hourly.temperature_2m_meteofrance_seamless[0],
+            "JMA (Japanese)": data.hourly.temperature_2m_jma_seamless[0]
+        };
+
+        let html = "";
+        for (const [name, val] of Object.entries(models)) {
+            html += `> ${name.padEnd(20)} : ${val}°C<br>`;
+        }
+        document.getElementById('model-list').innerHTML = html;
+
+    } catch (err) {
+        document.getElementById('model-list').innerText = "Error: Link Failure.";
+    }
 }
 
-.top-bar {
-    background: #000;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 2px solid var(--border);
-}
-
-.logo { font-size: 1.2rem; letter-spacing: 2px; color: var(--accent); }
-
-.tab-nav {
-    display: flex;
-    background: var(--card-bg);
-    border-bottom: 1px solid var(--border);
-}
-
-.tab-link {
-    background: none;
-    border: none;
-    color: #888;
-    padding: 15px 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.tab-link.active {
-    color: var(--accent);
-    border-bottom: 2px solid var(--accent);
-    background: rgba(0, 229, 255, 0.05);
-}
-
-.tab-content {
-    display: none;
-    height: calc(100vh - 110px);
-    padding: 20px;
-}
-
-.spc-map {
-    width: 48%;
-    border: 1px solid var(--border);
-    margin: 5px;
-}
-
-.radar-wrapper { height: 100%; border: 1px solid var(--border); }
-
-.terminal-text {
-    background: #000;
-    color: #00ff41; /* Classic Matrix/Tactical Green */
-    padding: 15px;
-    font-family: monospace;
-    border-radius: 4px;
-    line-height: 1.6;
-}
-
-.temp-big { font-size: 5rem; font-weight: bold; margin: 10px 0; }
+// Auto-load weather on start
+window.onload = fetchWeather;
