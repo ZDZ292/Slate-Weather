@@ -3,67 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLATEWEATHER PRO | V2.0</title>
+    <title>SLATEWEATHER PRO | TACTICAL OS V4.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="obsidian-theme">
+<body class="obsidian-core">
 
-    <audio id="sound-startup" src="https://actions.google.com/sounds/v1/foley/beeping_sequence.ogg"></audio>
-    <audio id="sound-click" src="https://actions.google.com/sounds/v1/foley/electronic_chime.ogg"></audio>
+    <audio id="snd-click" src="https://www.soundjay.com/buttons/sounds/button-28.mp3"></audio>
 
     <div id="system-lock">
-        <div class="lock-box">
-            <h1 class="glitch" data-text="SLATEWEATHER PRO">SLATEWEATHER PRO</h1>
-            <p>CRITICAL: TARGET LOCATION REQUIRED</p>
-            <div class="search-container">
-                <input type="text" id="location-input" placeholder="ENTER CITY (e.g. Evanston)..." onkeypress="handleSearch(event)">
-                <button onclick="performSearch()">LINK SYSTEM</button>
+        <div class="lock-panel">
+            <h1 class="tactical-title">SLATEWEATHER <span>PRO</span></h1>
+            <div class="status-box">SYSTEM STATUS: <span id="sys-status">LOCKED</span></div>
+            <div class="input-group">
+                <input type="text" id="loc-input" placeholder="ENTER ZIP OR CITY (e.g. 60201)" autocomplete="off">
+                <button onclick="bootSystem()">INITIALIZE</button>
             </div>
-            <p id="lock-status">WAITING FOR INPUT...</p>
+            <p id="feedback-msg">AWAITING COORDINATES...</p>
         </div>
     </div>
 
-    <div id="dashboard-main" style="display: none;">
-        <div class="top-bar">
-            <span class="logo">SLATEWEATHER <span class="accent">PRO</span></span>
-            <div id="current-coords">LAT: -- | LON: --</div>
-        </div>
+    <div id="app-shell" style="display: none;">
+        <header class="main-header">
+            <div class="brand">SLATEWEATHER // PRO</div>
+            <div id="meta-data" class="meta-data">LOCKED // --</div>
+        </header>
 
-        <nav class="tab-nav">
-            <button class="tab-link active" onclick="openTab(event, 'spc')">SPC OUTLOOKS</button>
-            <button class="tab-link" onclick="openTab(event, 'radar')">HIGH-RES RADAR</button>
-            <button class="tab-link" onclick="openTab(event, 'models')">8-MODEL DATA</button>
-            <button class="tab-link" onclick="openTab(event, 'status')">STATUS</button>
+        <nav class="side-nav">
+            <button class="nav-btn active" onclick="switchTab(event, 'spc-tab')">SPC OUTLOOKS</button>
+            <button class="nav-btn" onclick="switchTab(event, 'radar-tab')">HI-RES RADAR</button>
+            <button class="nav-btn" onclick="switchTab(event, 'model-tab')">8-MODEL ARRAY</button>
+            <button class="nav-btn" onclick="switchTab(event, 'status-tab')">SYSTEM STATUS</button>
         </nav>
 
-        <section id="spc" class="tab-content" style="display: block;">
-            <div class="spc-grid" id="spc-container">
+        <main class="content-area">
+            <section id="spc-tab" class="tab-pane active">
+                <div class="spc-gallery" id="spc-view"></div>
+            </section>
+
+            <section id="radar-tab" class="tab-pane">
+                <div class="radar-container">
+                    <iframe id="radar-map" frameborder="0"></iframe>
                 </div>
-        </section>
+            </section>
 
-        <section id="radar" class="tab-content">
-            <div class="radar-frame">
-                <iframe id="radar-iframe" src="" width="100%" height="100%" frameborder="0"></iframe>
-            </div>
-        </section>
+            <section id="model-tab" class="tab-pane">
+                <div class="model-grid" id="model-output">
+                    </div>
+            </section>
 
-        <section id="models" class="tab-content">
-            <div class="model-analysis">
-                <div class="terminal" id="model-output">Analyzing 8 Model Strings...</div>
-            </div>
-        </section>
-
-        <section id="status" class="tab-content">
-            <div class="status-panel">
-                <div class="stat-card"><span>UPLINK:</span> <span class="green">ACTIVE</span></div>
-                <div class="stat-card"><span>SATELLITE:</span> <span class="green">LOCKED</span></div>
-                <div class="stat-card"><span>TARGET:</span> <span id="stat-city">--</span></div>
-                <div class="stat-card"><span>OS:</span> <span>SLATE_KERNAL_V2</span></div>
-            </div>
-        </section>
+            <section id="status-tab" class="tab-pane">
+                <div class="status-console">
+                    <div class="log-line">> CORE: SLATE_KERNAL_V2.5</div>
+                    <div class="log-line">> NETWORK: CONNECTED</div>
+                    <div id="status-log"></div>
+                </div>
+            </section>
+        </main>
     </div>
 
-    <div class="scanline"></div>
+    <div id="spc-modal" class="modal">
+        <div class="modal-content obsidian-panel">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-header">
+                <h2 id="modal-title" class="tactical-title">DAY X // DETAILED RISK</h2>
+            </div>
+            <div id="modal-body" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="noise-overlay"></div>
     <script src="script.js"></script>
 </body>
 </html>
