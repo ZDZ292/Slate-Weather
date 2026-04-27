@@ -3,50 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SlateWeather PRO | Tactical Dashboard</title>
+    <title>SLATEWEATHER PRO | V2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="obsidian-theme">
 
-    <div class="top-bar">
-        <span class="logo">SLATEWEATHER <strong>PRO</strong></span>
-        <div class="status-indicator"><span class="dot"></span> LIVE DATA</div>
+    <audio id="sound-startup" src="https://actions.google.com/sounds/v1/foley/beeping_sequence.ogg"></audio>
+    <audio id="sound-click" src="https://actions.google.com/sounds/v1/foley/electronic_chime.ogg"></audio>
+
+    <div id="system-lock">
+        <div class="lock-box">
+            <h1 class="glitch" data-text="SLATEWEATHER PRO">SLATEWEATHER PRO</h1>
+            <p>CRITICAL: TARGET LOCATION REQUIRED</p>
+            <div class="search-container">
+                <input type="text" id="location-input" placeholder="ENTER CITY (e.g. Evanston)..." onkeypress="handleSearch(event)">
+                <button onclick="performSearch()">LINK SYSTEM</button>
+            </div>
+            <p id="lock-status">WAITING FOR INPUT...</p>
+        </div>
     </div>
 
-    <nav class="tab-nav">
-        <button class="tab-link active" onclick="openTab(event, 'spc')">SPC OUTLOOK</button>
-        <button class="tab-link" onclick="openTab(event, 'radar')">HIGH RES RADAR</button>
-        <button class="tab-link" onclick="openTab(event, 'models')">8-MODEL DATA</button>
-    </nav>
-
-    <section id="spc" class="tab-content" style="display: block;">
-        <div class="frame-container">
-            <h3>CONVECTIVE OUTLOOK (DAY 1)</h3>
-            <img src="https://www.spc.noaa.gov/products/outlook/day1otlk_sm.gif" class="spc-map">
-            <img src="https://www.spc.noaa.gov/products/outlook/day1probotlk_1300_torn_sm.gif" class="spc-map">
+    <div id="dashboard-main" style="display: none;">
+        <div class="top-bar">
+            <span class="logo">SLATEWEATHER <span class="accent">PRO</span></span>
+            <div id="current-coords">LAT: -- | LON: --</div>
         </div>
-    </section>
 
-    <section id="radar" class="tab-content">
-        <div class="radar-wrapper">
-            <iframe src="https://www.rainviewer.com/map.html?loc=42.0411,-87.6901,6&base=1&layer=1&color=3" width="100%" height="100%" frameborder="0"></iframe>
-        </div>
-    </section>
+        <nav class="tab-nav">
+            <button class="tab-link active" onclick="openTab(event, 'spc')">SPC OUTLOOKS</button>
+            <button class="tab-link" onclick="openTab(event, 'radar')">HIGH-RES RADAR</button>
+            <button class="tab-link" onclick="openTab(event, 'models')">8-MODEL DATA</button>
+            <button class="tab-link" onclick="openTab(event, 'status')">STATUS</button>
+        </nav>
 
-    <section id="models" class="tab-content">
-        <div class="model-grid">
-            <div class="current-obs">
-                <h2 id="city-name">EVANSTON, IL</h2>
-                <div class="temp-big" id="main-temp">--°</div>
-                <p id="condition-text">FETCHING DATA...</p>
+        <section id="spc" class="tab-content" style="display: block;">
+            <div class="spc-grid" id="spc-container">
+                </div>
+        </section>
+
+        <section id="radar" class="tab-content">
+            <div class="radar-frame">
+                <iframe id="radar-iframe" src="" width="100%" height="100%" frameborder="0"></iframe>
             </div>
-            <div class="data-log">
-                <h3>MULTI-MODEL ANALYSIS (TEMP °C)</h3>
-                <div id="model-list" class="terminal-text">Initializing 8-model fetch...</div>
-            </div>
-        </div>
-    </section>
+        </section>
 
+        <section id="models" class="tab-content">
+            <div class="model-analysis">
+                <div class="terminal" id="model-output">Analyzing 8 Model Strings...</div>
+            </div>
+        </section>
+
+        <section id="status" class="tab-content">
+            <div class="status-panel">
+                <div class="stat-card"><span>UPLINK:</span> <span class="green">ACTIVE</span></div>
+                <div class="stat-card"><span>SATELLITE:</span> <span class="green">LOCKED</span></div>
+                <div class="stat-card"><span>TARGET:</span> <span id="stat-city">--</span></div>
+                <div class="stat-card"><span>OS:</span> <span>SLATE_KERNAL_V2</span></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="scanline"></div>
     <script src="script.js"></script>
 </body>
 </html>
