@@ -1,85 +1,149 @@
 :root {
-    --bg: #050505;
-    --panel: #0f0f0f;
-    --accent: #00f2ff;
-    --danger: #ff003c;
-    --border: #222;
+    --primary: #00d4ff;
+    --danger: #ff0055;
+    --bg-deep: #050505;
+    --panel-bg: rgba(20, 20, 20, 0.95);
+    --border-glow: 0 0 10px rgba(0, 212, 255, 0.3);
+    --tactical-border: 1px solid #333;
 }
 
-body {
-    background-color: var(--bg);
-    color: #eee;
-    font-family: 'Courier New', monospace;
-    margin: 0;
+body, html {
+    margin: 0; padding: 0; height: 100%;
+    background-color: var(--bg-deep);
+    color: #e0e0e0;
+    font-family: 'Segoe UI', 'Courier New', monospace;
     overflow: hidden;
-    background-image: radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
 }
 
-/* SCANLINE EFFECT */
-.scanline {
-    width: 100%;
-    height: 100px;
-    z-index: 9999;
-    background: linear-gradient(0deg, rgba(0, 242, 255, 0) 0%, rgba(0, 242, 255, 0.05) 50%, rgba(0, 242, 255, 0) 100%);
-    opacity: 0.1;
-    position: absolute;
-    bottom: 100%;
-    animation: scan 4s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes scan {
-    0% { bottom: 100%; }
-    100% { bottom: -100px; }
-}
-
-/* SYSTEM LOCK */
+/* LOCK PANEL */
 #system-lock {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    position: fixed; inset: 0; 
+    display: flex; justify-content: center; align-items: center;
+    background: radial-gradient(circle, #0a0a0a 0%, #000 100%);
+    z-index: 9999;
 }
 
-.lock-box {
+.lock-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--primary);
+    padding: 3rem;
     text-align: center;
-    border: 1px solid var(--accent);
-    padding: 40px;
-    background: var(--panel);
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    box-shadow: var(--border-glow);
+    clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
 }
 
-.search-container input {
-    background: #000;
-    border: 1px solid var(--border);
-    color: var(--accent);
+.tactical-title { font-weight: 100; letter-spacing: 5px; margin-bottom: 0.5rem; }
+.tactical-title span { color: var(--primary); font-weight: 800; }
+
+.input-group input {
+    background: #000; border: 1px solid #333; color: var(--primary);
+    padding: 12px; width: 250px; outline: none;
+}
+
+.input-group button {
+    background: var(--primary); color: #000; border: none;
+    padding: 12px 20px; font-weight: bold; cursor: pointer;
+}
+
+/* MAIN DASHBOARD LAYOUT */
+#app-shell { display: grid; grid-template-columns: 200px 1fr; grid-template-rows: 60px 1fr; height: 100vh; }
+
+.main-header {
+    grid-column: 1 / 3; background: #000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 20px; border-bottom: 1px solid #222;
+}
+
+.side-nav {
+    background: #0a0a0a; border-right: 1px solid #222;
+    display: flex; flex-direction: column; padding-top: 20px;
+}
+
+.nav-btn {
+    background: none; border: none; color: #666; text-align: left;
+    padding: 15px 25px; cursor: pointer; font-size: 0.8rem; letter-spacing: 1px;
+}
+
+.nav-btn.active { color: var(--primary); border-left: 3px solid var(--primary); background: #111; }
+
+.content-area { padding: 20px; overflow-y: auto; }
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* SPC GALLERY & INTERACTIVITY (V4.0 Update) */
+.spc-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; }
+
+.spc-card {
+    border: var(--tactical-border);
+    border-radius: 4px;
     padding: 10px;
-    width: 250px;
+    background: #0a0a0a;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-/* DASHBOARD */
-.tab-nav { display: flex; border-bottom: 1px solid var(--border); background: #000; }
-.tab-link { background: none; border: none; color: #666; padding: 15px; cursor: pointer; border-right: 1px solid var(--border); }
-.tab-link.active { color: var(--accent); background: #111; }
+.spc-card img { width: 100%; }
 
-.spc-grid {
+.spc-card:hover {
+    box-shadow: var(--border-glow);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* MODEL CARDS */
+.model-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.model-card { background: #111; border: var(--tactical-border); padding: 15px; text-align: center; }
+.model-name { color: var(--primary); font-size: 0.7rem; margin-bottom: 5px; }
+.model-val { font-size: 1.5rem; font-weight: bold; }
+
+/* SPC MODAL STYLES (V4.0 Update) */
+.modal {
+    display: none; position: fixed; z-index: 10000;
+    inset: 0; background-color: rgba(0,0,0,0.85);
+    overflow-y: auto; padding: 20px;
+}
+
+.modal-content {
+    background: var(--panel-bg);
+    margin: 3% auto; padding: 30px;
+    border: 1px solid var(--primary);
+    box-shadow: var(--border-glow);
+    width: 90%; max-width: 1400px;
+    border-radius: 8px;
+    clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+}
+
+.close-modal {
+    color: var(--primary); font-size: 2.5rem; font-weight: 300;
+    position: absolute; top: 15px; right: 25px;
+    cursor: pointer; transition: color 0.2s ease;
+}
+
+.close-modal:hover { color: #fff; }
+
+.modal-header { border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+
+/* MODAL MULTI-MAP LAYOUT (For Day 1 & 2) */
+.modal-multi-map {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    overflow-y: auto;
-    height: 80vh;
 }
 
-.spc-card img { width: 100%; border: 1px solid var(--border); }
-
-.terminal {
-    background: #000;
-    color: #00ff41;
-    padding: 20px;
-    height: 400px;
-    overflow-y: auto;
-    border: 1px solid #004400;
+.modal-sub-card {
+    border: var(--tactical-border);
+    padding: 10px;
+    background: #0a0a0a;
 }
+
+.modal-sub-title {
+    color: var(--primary);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.modal-single-map { text-align: center; }
+.modal-single-map img { max-width: 100%; border: var(--tactical-border); }
