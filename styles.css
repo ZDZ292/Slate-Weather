@@ -1,54 +1,43 @@
-:root {
-    --bg: #050505;
-    --card: #0f0f0f;
-    --text: #ffffff;
-    --accent: #ffffff;
-    --border: rgba(255,255,255,0.1);
-}
+:root { --bg: #000000; --card: #0a0a0a; --border: #1a1a1a; --text: #ffffff; --dim: #888; }
 
-body, html {
-    margin: 0; padding: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    height: 100vh; overflow: hidden;
-}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
+.serif { font-family: 'Cormorant Garamond', serif; font-weight: 300; }
+.hidden { display: none !important; }
 
-.serif-display { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 6rem; letter-spacing: -2px; }
+/* Lock Screen - Pixel Match */
+#lock-screen { position: fixed; inset: 0; background: black; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.clock-section { text-align: center; margin: 40px 0; }
+#lock-clock { font-size: 8rem; margin: 0; letter-spacing: -2px; }
+#lock-date { font-size: 1.2rem; color: var(--dim); margin-top: -10px; }
 
-/* Lock Screen */
-#lock-screen {
-    position: fixed; inset: 0; z-index: 100;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    background: black; transition: 0.5s ease;
-}
+.pin-box { background: var(--card); padding: 30px; border-radius: 24px; border: 1px solid var(--border); width: 320px; }
+.pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+.pad button { height: 60px; background: #111; border: 1px solid var(--border); color: white; border-radius: 12px; font-size: 1.2rem; cursor: pointer; }
+.pad button.txt { font-size: 0.7rem; font-weight: bold; }
 
-.clock-wrap { text-align: center; margin-bottom: 40px; }
-.date-sub { font-size: 1.2rem; color: #888; margin-top: -10px; }
+/* Dashboard - Pixel Match */
+.main-header { padding: 40px; display: flex; justify-content: space-between; align-items: flex-start; }
+.header-left .label { font-size: 0.7rem; letter-spacing: 2px; color: var(--dim); }
+.header-left h1 { font-size: 2.5rem; margin: 5px 0; }
+.header-right button { background: transparent; border: 1px solid var(--border); color: white; width: 45px; height: 45px; border-radius: 50%; margin-left: 10px; cursor: pointer; }
 
-.pin-interface {
-    background: #0a0a0a; border: 1px solid var(--border);
-    padding: 30px; border-radius: 20px; text-align: center;
-}
+.dashboard-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; padding: 0 40px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 30px; position: relative; }
+.full-width { grid-column: span 2; }
 
-.numpad {
-    display: grid; grid-template-columns: repeat(3, 80px); gap: 15px; margin-top: 20px;
-}
+/* Current Card Styles */
+#big-temp { font-size: 9rem; line-height: 1; letter-spacing: -5px; }
+.degree-sym { font-size: 4rem; vertical-align: top; margin-top: 20px; display: inline-block; }
+.main-flex { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; border-top: 1px solid var(--border); padding-top: 20px; }
+.s-item span { display: block; font-size: 0.65rem; color: var(--dim); letter-spacing: 1px; }
+.s-item b { font-family: 'Cormorant Garamond'; font-size: 1.4rem; font-weight: 300; }
 
-.numpad button {
-    height: 80px; background: transparent; border: 1px solid var(--border);
-    color: white; font-size: 1.5rem; border-radius: 12px; cursor: pointer;
-}
+/* Hourly Blocks */
+.h-flex { display: flex; justify-content: space-between; margin-top: 20px; }
+.h-item { background: #111; border: 1px solid var(--border); border-radius: 20px; padding: 15px; width: 11%; text-align: center; }
+.h-item span { font-size: 0.8rem; color: var(--dim); }
+.h-item b { display: block; margin-top: 10px; font-family: 'Cormorant Garamond'; font-size: 1.2rem; }
 
-.numpad button:hover { background: rgba(255,255,255,0.05); }
-
-/* Dashboard Layout */
-#dashboard { display: flex; height: 100vh; }
-.sidebar { width: 70px; border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
-.brand-v { writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 200; letter-spacing: 5px; color: #444; }
-.content { flex: 1; padding: 40px; overflow-y: auto; }
-
-.weather-story-container img { width: 100%; border-radius: 15px; border: 1px solid var(--border); }
-.nws-terminal { background: #000; padding: 20px; font-family: monospace; font-size: 0.9rem; line-height: 1.6; border: 1px solid #222; margin-top: 20px; height: 60vh; overflow-y: scroll; white-space: pre-wrap; }
-
-.hidden { display: none !important; opacity: 0; pointer-events: none; }
+.terminal { background: black; padding: 15px; font-family: monospace; font-size: 0.8rem; color: #aaa; height: 300px; overflow-y: auto; white-space: pre-wrap; }
