@@ -1,82 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400&display=swap');
+
 :root {
-    --bg-color: #000000;
-    --card-bg: #121212;
-    --accent-blue: #007AFF;
-    --text-main: #ffffff;
-    --text-dim: #a0a0a0;
-    --danger-red: #ff3b30;
+    --bg: #000000;
+    --card: #121212;
+    --text-serif: 'Cormorant Garamond', serif;
+    --text-sans: 'Inter', sans-serif;
+    --border: rgba(255, 255, 255, 0.1);
 }
 
 body {
+    background-color: var(--bg);
+    color: white;
+    font-family: var(--text-sans);
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    overflow: hidden;
 }
 
-/* Tab Navigation Bar */
-.bottom-tabs {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 70px;
-    background: rgba(20, 20, 20, 0.95);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-top: 1px solid #333;
-}
-
-.bottom-tabs button {
-    background: none;
-    border: none;
-    color: var(--text-dim);
+/* Lock Screen Styling (Matching your Pin Pad Image) */
+#lock-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 10px;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.lock-time {
+    font-family: var(--text-serif);
+    font-size: 8rem;
+    margin: 0;
+}
+
+.pin-pad {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 300px;
+}
+
+.pin-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    font-family: var(--text-serif);
+    font-size: 1.5rem;
     cursor: pointer;
 }
 
-.bottom-tabs button i {
-    font-size: 20px;
-    margin-bottom: 4px;
+/* Dashboard Cards (Matching your Dashboard Image) */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
 }
 
-.bottom-tabs button.active {
-    color: var(--accent-blue);
-}
-
-/* Grid for Weather Stats (UV, Heat Index, etc) */
-.real-time-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    padding: 20px;
-}
-
-.stat-card {
-    background: var(--card-bg);
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.stat-card span { color: var(--text-dim); display: block; margin-bottom: 5px; }
-.stat-card b { font-size: 22px; }
-
-/* Severe Alerts Pulse */
-.alert-banner {
-    background: var(--danger-red);
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
+.big-temp {
+    font-family: var(--text-serif);
+    font-size: 10rem;
+    line-height: 1;
 }
