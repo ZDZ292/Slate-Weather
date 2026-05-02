@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slate-Weather PRO</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-mode">
+    <div id="lock-screen" class="overlay">
+        <header>PRIVATE WEATHER</header>
+        <div id="clock">11:09 AM</div>
+        <div id="date">Saturday, May 2</div>
+        <div class="numpad">
+            <button onclick="handleInput('1')">1</button>
+            <button onclick="handleInput('2')">2</button>
+            <button onclick="handleInput('3')">3</button>
+            <button onclick="handleInput('4')">4</button>
+            <button onclick="handleInput('enter')">ENTER</button>
+        </div>
+    </div>
+
+    <main id="dashboard" class="hidden">
+        <div class="header-nav">
+            <h1>Chicago O'Hare</h1>
+        </div>
+
+        <div class="main-layout">
+            <section class="hero-card">
+                <div class="temp-display">50°</div>
+                <p>Scattered Clouds</p>
+                <div class="details">
+                    <span>Wind: 8mph</span> | <span>Humidity: 46%</span>
+                </div>
+            </section>
+
+            <section class="forecast-7day">
+                <h3>7-Day Forecast</h3>
+                <div id="daily-list"></div>
+            </section>
+        </div>
+
+        <section class="severe-center">
+            <div class="widget spc-outlook"></div>
+            <div class="widget nws-discussion">
+                <h3>Area Forecast Discussion</h3>
+                <div id="afd-text">Loading local weather story...</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="spc.js"></script>
+    <script src="nws.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
