@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Private Weather</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- LOCK SCREEN -->
     <div id="lock-screen" class="active">
-        <div class="lock-header">
-            <i class="fa-solid fa-lock" style="font-size: 0.8rem; margin-right: 5px;"></i> PRIVATE WEATHER
-        </div>
+        <div class="lock-header"><i class="fa-solid fa-lock"></i> PRIVATE WEATHER</div>
         <h1 id="lock-time" class="serif-time">11:09 AM</h1>
         <p id="lock-date">Saturday, May 2</p>
 
@@ -39,9 +36,9 @@
             </div>
             <p class="pin-footer">DEFAULT PASSCODE: 123456 • CHANGE IN SETTINGS</p>
         </div>
+        <div class="watermark"><i class="fa-brands fa-envira"></i> Made with Emergent</div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
     <div id="dashboard" class="hidden">
         <header class="top-bar">
             <div class="location-info">
@@ -50,14 +47,13 @@
             </div>
             <div class="top-controls">
                 <button onclick="initWeather()"><i class="fa-solid fa-rotate-right"></i></button>
-                <button onclick="document.getElementById('severe-modal').classList.toggle('hidden')"><i class="fa-solid fa-triangle-exclamation"></i></button>
+                <button onclick="document.getElementById('severe-modal').classList.toggle('hidden')"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <button><i class="fa-solid fa-gear"></i></button>
                 <button onclick="location.reload()"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
             </div>
         </header>
 
         <div class="main-content">
-            <!-- Top Grid: Current & 7-Day -->
             <div class="grid-top">
                 <div class="card current-card">
                     <div class="card-header">
@@ -71,41 +67,32 @@
                         <span id="current-temp" class="huge-temp">50</span><span class="unit-f">°F</span>
                     </div>
                     <div class="current-stats">
-                        <div class="stat"><span class="stat-label"><i class="fa-solid fa-wind"></i> WIND</span><br><span class="stat-val" id="wind-val">8 mph</span></div>
-                        <div class="stat"><span class="stat-label"><i class="fa-solid fa-droplet"></i> HUMIDITY</span><br><span class="stat-val" id="hum-val">46%</span></div>
-                        <div class="stat"><span class="stat-label"><i class="fa-solid fa-gauge-high"></i> PRESSURE</span><br><span class="stat-val" id="pres-val">1020 hPa</span></div>
-                        <div class="stat"><span class="stat-label"><i class="fa-regular fa-eye"></i> VISIBILITY</span><br><span class="stat-val" id="vis-val">10 km</span></div>
+                        <div class="stat"><span class="stat-label">WIND</span><br><span class="stat-val" id="wind-val">8 mph</span></div>
+                        <div class="stat"><span class="stat-label">HUMIDITY</span><br><span class="stat-val" id="hum-val">46%</span></div>
+                        <div class="stat"><span class="stat-label">PRESSURE</span><br><span class="stat-val" id="pres-val">1020 hPa</span></div>
+                        <div class="stat"><span class="stat-label">VISIBILITY</span><br><span class="stat-val" id="vis-val">10 km</span></div>
                     </div>
                     <p class="feels-like">Feels like <b id="feels-val">47°F</b> • L <span id="low-val">48°F</span> • H <span id="high-val">52°F</span></p>
                 </div>
 
                 <div class="card forecast-card">
                     <h3>7-DAY FORECAST</h3>
-                    <div id="daily-forecast" class="forecast-list">
-                        <!-- Filled by JS -->
-                    </div>
-                    <p class="unit-label">UNIT: °F</p>
+                    <div id="daily-forecast" class="forecast-list"></div>
+                    <p class="unit-label">UNIT • °F</p>
                 </div>
             </div>
 
-            <!-- Middle: Hourly -->
             <div class="card hourly-card">
-                <div class="hourly-header">
-                    <h3>NEXT HOURS</h3>
-                    <span class="entries-label">8 entries</span>
-                </div>
-                <div id="hourly-forecast" class="hourly-flex">
-                    <!-- Filled by JS -->
-                </div>
+                <div class="hourly-header"><h3>NEXT HOURS</h3><span class="entries-label">8 entries</span></div>
+                <div id="hourly-forecast" class="hourly-flex"></div>
             </div>
 
-            <!-- Bottom Grid: Sun, UV, AQI -->
             <div class="grid-bottom">
                 <div class="card small-card">
                     <h3>SUN ARC</h3>
                     <div class="sun-arc-visual">
-                        <div class="arc-path"></div>
-                        <i class="fa-solid fa-sun sun-icon"></i>
+                        <svg class="arc-svg" viewBox="0 0 100 50"><path d="M 5 50 A 45 45 0 0 1 95 50" fill="none" stroke="#333" stroke-width="2" stroke-dasharray="4,4"/></svg>
+                        <i class="fa-solid fa-sun sun-icon" id="sun-position"></i>
                     </div>
                     <div class="sun-times">
                         <span><i class="fa-solid fa-sunrise"></i> <span id="sunrise">5:46 AM</span></span>
@@ -114,35 +101,29 @@
                 </div>
                 <div class="card small-card">
                     <h3>UV INDEX</h3>
-                    <div class="uv-bar-container">
-                        <div class="uv-bar" id="uv-bar"></div>
-                    </div>
-                    <p class="uv-label">UV data tracking active.</p>
+                    <div class="uv-display"><span id="uv-val" class="huge-serif-small">0</span></div>
+                    <div class="uv-bar-container"><div class="uv-bar" id="uv-bar"></div></div>
+                    <p class="uv-label">UV tracking active.</p>
                 </div>
                 <div class="card small-card">
                     <h3>AIR QUALITY</h3>
-                    <div class="aqi-main">
-                        <span id="aqi-num" class="huge-serif">2</span> <span id="aqi-desc" class="aqi-fair">Fair</span>
-                    </div>
+                    <div class="aqi-main"><span id="aqi-num" class="huge-serif">2</span> <span id="aqi-desc" class="aqi-fair">Fair</span></div>
                     <div class="aqi-grid">
-                        <span>PM2.5 <b id="pm25">2</b> µg/m³</span>
-                        <span>PM10 <b id="pm10">3</b> µg/m³</span>
-                        <span>O3 <b id="o3">92</b> µg/m³</span>
-                        <span>NO2 <b id="no2">2</b> µg/m³</span>
+                        <span>PM2.5 <b id="pm25">2</b> <small>µg/m³</small></span>
+                        <span>PM10 <b id="pm10">3</b> <small>µg/small></span>
                     </div>
                 </div>
             </div>
-            <p class="footer-credit">POWERED BY OPENWEATHERMAP • FOR YOUR EYES ONLY</p>
+            <p class="footer-credit">POWERED BY OPEN-METEO & WEATHERAPI • FOR YOUR EYES ONLY</p>
         </div>
     </div>
 
-    <!-- SEVERE WEATHER MODAL -->
     <div id="severe-modal" class="hidden severe-overlay">
         <div class="severe-content card">
-            <button class="close-btn" onclick="document.getElementById('severe-modal').classList.add('hidden')">X</button>
-            <h2 class="serif-time">Severe Weather Center</h2>
+            <button class="close-btn" onclick="document.getElementById('severe-modal').classList.add('hidden')">×</button>
+            <h2 class="serif-time">Meteorological Data</h2>
             <div id="spc-data">Loading SPC Outlooks...</div>
-            <div id="nws-data" style="margin-top: 20px; font-family: monospace; font-size: 0.9rem; max-height: 200px; overflow-y: auto;">Loading Area Forecast Discussion...</div>
+            <div id="nws-data">Loading NWS Discussion...</div>
         </div>
     </div>
 
