@@ -1,8 +1,8 @@
 const CONFIG = {
-    // Replace with your unblocked OpenWeather key
-    OPENWEATHER_API_KEY: '520798d83e7d393926e8c36dd888f952', 
-    DEFAULT_LAT: 41.9742, // Chicago O'Hare
+    WEATHER_API_KEY: '3448f220268541c491e161543242604', 
+    PIRATE_WEATHER_KEY: '298c19958784d128d542095f90378822',
+    DEFAULT_LAT: 41.9742, 
     DEFAULT_LON: -87.9073,
-    DEFAULT_PASSCODE: '123456', // 6 digits matching your UI
+    DEFAULT_PASSCODE: '123456', 
     UNITS: 'imperial'
 };
