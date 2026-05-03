@@ -2,76 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SLATE WEATHER PRO</title>
+    <title>SLATE WEATHER</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
 </head>
-<body class="slate-theme">
-
+<body>
     <div id="lock-screen" class="active">
-        <div class="scanner-line"></div>
-        <div class="lock-ui">
-            <h1 class="glitch">SLATE SYSTEM</h1>
-            <div id="pin-display" class="pin-hidden">••••</div>
-            <div class="numpad">
-                <!-- Numpad 0-9 and Enter generated in JS -->
-            </div>
+        <div class="scanline"></div>
+        <div class="lock-content">
+            <h2 class="orbitron">SLATE SYSTEM</h2>
+            <div id="pin-view">••••</div>
+            <div class="numpad" id="numpad"></div>
         </div>
     </div>
 
-    <div id="dashboard" class="hidden">
+    <div id="app" class="hidden">
         <header>
-            <div class="logo">
-                <svg width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#00ff00"/><path d="M50 10v20M50 70v20M10 50h20M70 50h20" stroke="#00ff00" stroke-width="5"/></svg>
-                <span>SLATE <span class="green">WEATHER</span></span>
+            <div class="slate-logo orbitron">
+                <div class="sun-merge"></div> SLATE <span class="green">WEATHER</span>
             </div>
-            <nav class="tabs">
-                <button onclick="showTab(1)" class="active">CURRENT</button>
-                <button onclick="showTab(2)">SPC OUTLOOK</button>
-                <button onclick="showTab(3)">MESOSCALE</button>
-                <button onclick="showTab(4)">14-DAY</button>
-                <button onclick="showTab(5)">72-HR</button>
+            <nav>
+                <button onclick="switchTab('current')" class="t-btn active">CURRENT</button>
+                <button onclick="switchTab('spc')" class="t-btn">SPC OUTLOOK</button>
+                <button onclick="switchTab('mcd')" class="t-btn">MESOSCALE</button>
+                <button onclick="switchTab('14day')" class="t-btn">14-DAY</button>
+                <button onclick="switchTab('72hr')" class="t-btn">72-HR</button>
             </nav>
         </header>
 
         <main>
-            <!-- Tab 1: Current -->
-            <section id="tab-1" class="tab-content active">
-                <div class="hero-grid">
-                    <div class="card live-data">
-                        <div id="live-icon"></div>
-                        <h2 id="temp-big">--°</h2>
-                        <div class="accum-box">
-                            <span>SNOW: <b id="snow-val">0.0"</b></span>
-                            <span>RAIN: <b id="rain-val">0.0"</b></span>
-                        </div>
+            <section id="current" class="tab active">
+                <div class="live-hero">
+                    <div id="big-icon"></div>
+                    <h1 id="main-temp">--°</h1>
+                    <div class="precip-stats">
+                        SNOW: <span id="snow-val">0.0"</span> RAIN: <span id="rain-val">0.0"</span>
                     </div>
-                    <div class="card alert-list">
-                        <h3><i class="fa-solid fa-bolt"></i> LIVE ALERTS</h3>
-                        <div id="alert-feed"></div>
-                    </div>
+                </div>
+                <div class="alert-box">
+                    <h3 class="orbitron">LIVE ALERTS</h3>
+                    <div id="alert-feed">SCANNING FOR THREATS...</div>
                 </div>
             </section>
 
-            <!-- Tab 2: SPC (Days 1, 2, 3, 4-8) -->
-            <section id="tab-2" class="tab-content">
-                <div class="spc-grid" id="spc-tab-view"></div>
+            <section id="spc" class="tab">
+                <div class="spc-container" id="spc-list"></div>
             </section>
 
-            <!-- Tab 3: Mesoscale -->
-            <section id="tab-3" class="tab-content">
-                <div class="card terminal" id="mcd-feed">Loading MDs...</div>
+            <section id="mcd" class="tab">
+                <div class="terminal" id="mcd-content">INITIALIZING CONNECTION TO NWS...</div>
             </section>
 
-            <!-- Tab 4: 14-Day -->
-            <section id="tab-4" class="tab-content">
-                <div class="long-range-grid" id="long-range-view"></div>
-            </section>
-
-            <!-- Tab 5: 72-Hourly -->
-            <section id="tab-5" class="tab-content">
-                <div class="hourly-table" id="hourly-72-view"></div>
-            </section>
+            <section id="14day" class="tab"><div class="grid" id="long-range"></div></section>
+            <section id="72hr" class="tab"><div class="grid" id="hourly-72"></div></section>
         </main>
     </div>
 
