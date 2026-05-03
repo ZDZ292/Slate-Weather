@@ -2,109 +2,114 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SlateWeather PRO</title>
+    <title>The Slate Station PRO</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="dark-theme">
 
-    <!-- LOCK SCREEN (Matches Screenshot 2026-05-02 11.09.51 AM_4.png) -->
+    <!-- LOCK SCREEN -->
     <div id="lock-screen" class="active">
         <div class="lock-header"><i class="fa-solid fa-lock"></i> PRIVATE WEATHER</div>
-        <div class="lock-clock-box">
-            <h1 id="lock-time" class="serif">11:09 AM</h1>
+        <div class="lock-content">
+            <h1 id="lock-time" class="serif">11:24 PM</h1>
             <p id="lock-date">Saturday, May 2</p>
+            <div id="lock-precip" class="precip-mini">Loading accumulation...</div>
         </div>
-        <div class="pin-container">
+        <div class="pin-card">
             <div class="pin-dots" id="pin-dots"><span></span><span></span><span></span><span></span></div>
-            <div class="pin-pad">
+            <div class="pin-grid">
                 <button onclick="addPin('1')">1</button><button onclick="addPin('2')">2</button><button onclick="addPin('3')">3</button>
                 <button onclick="addPin('4')">4</button><button onclick="addPin('5')">5</button><button onclick="addPin('6')">6</button>
                 <button onclick="addPin('7')">7</button><button onclick="addPin('8')">8</button><button onclick="addPin('9')">9</button>
-                <button class="txt-btn" onclick="submitPin()">ENTER</button><button onclick="addPin('0')">0</button><button onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
+                <button class="small-txt" onclick="submitPin()">ENTER</button><button onclick="addPin('0')">0</button><button onclick="clearPin()"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <p class="pin-hint">DEFAULT PASSCODE: 1234 • CHANGE IN SETTINGS</p>
+            <p class="pin-footer">DEFAULT PASSCODE: 1234 • CHANGE IN SETTINGS</p>
         </div>
     </div>
 
     <!-- MAIN DASHBOARD -->
     <div id="dashboard" class="hidden">
-        <header class="top-nav">
-            <div class="nav-left">
-                <span class="small-label">PRIVATE WEATHER</span>
-                <h1 class="serif"><i class="fa-solid fa-location-dot"></i> Chicago O'Hare <small>US</small></h1>
-            </div>
-            <div class="nav-right">
-                <button onclick="initDashboard()"><i class="fa-solid fa-rotate"></i></button>
-                <button><i class="fa-solid fa-magnifying-glass"></i></button>
-                <button><i class="fa-solid fa-gear"></i></button>
-                <button onclick="location.reload()"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-            </div>
-        </header>
+        <nav class="side-tabs">
+            <button class="tab-btn active" onclick="showTab('tab-current')"><i class="fa-solid fa-cloud-bolt"></i><span>Current</span></button>
+            <button class="tab-btn" onclick="showTab('tab-spc')"><i class="fa-solid fa-shield-halved"></i><span>SPC</span></button>
+            <button class="tab-btn" onclick="showTab('tab-hourly')"><i class="fa-solid fa-clock"></i><span>72h</span></button>
+            <button class="tab-btn" onclick="showTab('tab-daily')"><i class="fa-solid fa-calendar-days"></i><span>10 Day</span></button>
+            <button class="tab-btn" onclick="showTab('tab-meso')"><i class="fa-solid fa-tornado"></i><span>Meso</span></button>
+            <button class="tab-btn" onclick="showTab('tab-local')"><i class="fa-solid fa-bullhorn"></i><span>Local</span></button>
+            <button class="tab-btn" onclick="showTab('tab-radar')"><i class="fa-solid fa-satellite-dish"></i><span>Radar</span></button>
+            <button class="tab-btn settings-btn" onclick="showTab('tab-settings')"><i class="fa-solid fa-gear"></i></button>
+        </nav>
 
-        <main class="grid-layout">
-            <!-- Row 1: Current & Forecast -->
-            <div class="card current-card">
-                <div class="card-header-flex">
-                    <div class="meta">NOW • ROSEMONT, US<br><span id="dash-clock">11:09 AM local</span></div>
-                    <div class="cond-icon-box">
-                        <i id="main-icon" class="fa-solid fa-cloud"></i>
-                        <span id="main-desc">Scattered Clouds</span>
+        <main class="tab-content">
+            <!-- TAB 1: CURRENT -->
+            <section id="tab-current" class="tab-panel active">
+                <div class="alert-banner hidden" id="severe-alerts"></div>
+                <div class="current-main">
+                    <h1 class="serif">Chicago O'Hare <small>US</small></h1>
+                    <div class="hero-temp">
+                        <div class="temp-val serif" id="main-temp">50</div><span class="unit serif">°F</span>
+                        <div class="animated-icon" id="main-weather-icon"></div>
+                    </div>
+                    <div class="live-metrics">
+                        <div class="met-card">Rain Accum: <b id="rain-val">0.00"</b></div>
+                        <div class="met-card">Snow Accum: <b id="snow-val">0.0"</b></div>
+                        <div class="met-card">Lightning (15mi): <b id="lightning-val">None</b></div>
                     </div>
                 </div>
-                <div class="big-temp-container">
-                    <span id="temp-val" class="serif">50</span><span class="serif deg">°F</span>
+            </section>
+
+            <!-- TAB 2: SPC (Sub-tabs) -->
+            <section id="tab-spc" class="tab-panel">
+                <div class="sub-nav">
+                    <button onclick="loadSPC('1')">Day 1</button><button onclick="loadSPC('2')">Day 2</button>
+                    <button onclick="loadSPC('3')">Day 3</button><button onclick="loadSPC('4')">Day 4-8</button>
                 </div>
-                <div class="metrics-row">
-                    <div class="m-box"><label><i class="fa-solid fa-wind"></i> WIND</label><b id="v-wind">8 mph</b></div>
-                    <div class="m-box"><label><i class="fa-solid fa-droplet"></i> HUMIDITY</label><b id="v-hum">46%</b></div>
-                    <div class="m-box"><label><i class="fa-solid fa-gauge"></i> PRESSURE</label><b id="v-pres">1020 hPa</b></div>
-                    <div class="m-box"><label><i class="fa-solid fa-eye"></i> VISIBILITY</label><b id="v-vis">10 km</b></div>
+                <div class="spc-zoom-view">
+                    <img id="spc-img" src="" alt="SPC Outlook">
                 </div>
-                <div class="feels-bar">Feels like <b id="v-feels">47°F</b> • L <span id="v-low">48°F</span> • H <span id="v-high">52°F</span></div>
-            </div>
+            </section>
 
-            <div class="card forecast-card">
-                <h3>7-DAY FORECAST</h3>
-                <div id="daily-list"></div>
-                <div class="unit-tag">UNIT • °F</div>
-            </div>
+            <!-- TAB 3: 72H HOURLY -->
+            <section id="tab-hourly" class="tab-panel">
+                <div class="hourly-long-grid" id="hourly-72-container"></div>
+            </section>
 
-            <!-- Row 2: Hourly -->
-            <div class="card hourly-card full-span">
-                <div class="h-head"><h3>NEXT HOURS</h3><span>8 entries</span></div>
-                <div id="hourly-list" class="h-row"></div>
-            </div>
+            <!-- TAB 4: 10 DAY -->
+            <section id="tab-daily" class="tab-panel">
+                <div class="daily-10-grid" id="daily-10-container"></div>
+            </section>
 
-            <!-- Row 3: Bottom Widgets -->
-            <div class="card bottom-card">
-                <h3>SUN ARC</h3>
-                <div class="sun-arc-wrap"><div class="arc-line"></div><div id="sun-point" class="sun-point"></div></div>
-                <div class="sun-times">
-                    <span><i class="fa-solid fa-sunrise"></i> <b id="v-rise">5:46 AM</b></span>
-                    <span><b id="v-set">7:50 PM</b> <i class="fa-solid fa-sunset"></i></span>
+            <!-- TAB 5: MESOSCALE -->
+            <section id="tab-meso" class="tab-panel">
+                <div id="meso-container" class="terminal-view">Fetching Mesoscale Discussions...</div>
+            </section>
+
+            <!-- TAB 6: LOCAL AREA -->
+            <section id="tab-local" class="tab-panel">
+                <div class="local-flex">
+                    <div class="card terminal-view" id="afd-text">Local Area Discussion</div>
+                    <div class="card" id="story-slideshow"><img id="story-img" src=""></div>
                 </div>
-            </div>
+            </section>
 
-            <div class="card bottom-card">
-                <h3>UV INDEX</h3>
-                <div class="uv-track"><div id="uv-fill"></div></div>
-                <p class="uv-msg">UV data tracking active.</p>
-            </div>
+            <!-- TAB 7: RADAR -->
+            <section id="tab-radar" class="tab-panel">
+                <iframe src="https://www.rainviewer.com/map.html?loc=41.9742,-87.9073,8&controlPanel=1&defaultLayer=radar" width="100%" height="100%" frameborder="0"></iframe>
+            </section>
 
-            <div class="card bottom-card">
-                <h3>AIR QUALITY</h3>
-                <div class="aqi-main"><span id="v-aqi" class="serif">2</span> <span class="aqi-status">Fair</span></div>
-                <div class="aqi-grid">
-                    <span>PM2.5 <b id="v-pm25">2</b></span>
-                    <span>PM10 <b id="v-pm10">3</b></span>
-                    <span>O<sub>3</sub> <b id="v-o3">92</b></span>
-                    <span>NO<sub>2</sub> <b id="v-no2">2</b></span>
+            <!-- TAB 8: SETTINGS -->
+            <section id="tab-settings" class="tab-panel">
+                <div class="card">
+                    <h3>SYSTEM SETTINGS</h3>
+                    <div class="setting-item">Theme: <select id="theme-sel" onchange="updateTheme()"><option value="dark">Dark</option><option value="light">Light</option></select></div>
+                    <div class="setting-item">Units: <select id="unit-sel"><option value="f">Fahrenheit</option><option value="c">Celsius</option></select></div>
+                    <button class="lock-btn" onclick="lockSystem()">Lock Screen</button>
                 </div>
-            </div>
+            </section>
         </main>
-        <footer class="dash-footer">POWERED BY OPENWEATHERMAP • FOR YOUR EYES ONLY</footer>
+        <footer class="pixel-footer">POWERED BY OPENWEATHERMAP • FOR YOUR EYES ONLY</footer>
     </div>
 
     <script src="config.js"></script>
