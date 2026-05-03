@@ -1,54 +1,25 @@
-:root { --black: #000; --card: #0a0a0a; --border: #1a1a1a; --text: #fff; --dim: #888; }
-* { box-sizing: border-box; }
-body { background: var(--black); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
-.serif { font-family: 'Cormorant Garamond', serif; font-weight: 300; }
+:root { --bg: #000; --card: #0a0a0a; --accent: #fff; --border: #1a1a1a; --side: 100px; }
+body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
+.serif { font-family: 'Cormorant Garamond', serif; }
 .hidden { display: none !important; }
 
-/* LOCK SCREEN */
-#lock-screen { position: fixed; inset: 0; background: #000; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.lock-header { font-size: 0.7rem; letter-spacing: 3px; color: var(--dim); margin-bottom: 2rem; }
-#lock-time { font-size: 9rem; margin: 0; letter-spacing: -3px; }
-#lock-date { font-size: 1.4rem; color: var(--dim); margin-top: -10px; }
-.pin-container { background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 40px; width: 340px; margin-top: 3rem; }
-.pin-dots { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
-.pin-dots span { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #333; transition: 0.3s; }
-.pin-dots span.filled { background: #fff; border-color: #fff; box-shadow: 0 0 10px #fff; }
-.pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.pin-pad button { height: 65px; background: #111; border: 1px solid var(--border); color: #fff; border-radius: 15px; font-size: 1.5rem; cursor: pointer; }
-.pin-pad button.txt-btn { font-size: 0.7rem; font-weight: bold; }
+/* Side Navigation */
+.side-tabs { position: fixed; left: 0; top: 0; bottom: 0; width: var(--side); background: #050505; border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding-top: 30px; }
+.tab-btn { background: none; border: none; color: #444; font-size: 1.5rem; margin-bottom: 30px; cursor: pointer; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
+.tab-btn span { font-size: 0.6rem; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+.tab-btn.active { color: #fff; text-shadow: 0 0 10px #fff; }
 
-/* DASHBOARD LAYOUT */
-.top-nav { padding: 40px 60px; display: flex; justify-content: space-between; align-items: flex-end; }
-.nav-left .small-label { font-size: 0.7rem; color: var(--dim); letter-spacing: 2px; }
-.nav-left h1 { font-size: 3.5rem; margin: 5px 0 0 0; }
-.nav-left h1 small { font-size: 1.2rem; font-family: 'Inter'; color: var(--dim); vertical-align: middle; }
-.nav-right button { background: transparent; border: 1px solid var(--border); color: #fff; width: 50px; height: 50px; border-radius: 50%; margin-left: 15px; cursor: pointer; }
+/* Lock Screen Animation */
+#lock-screen { position: fixed; inset: 0; background: #000; z-index: 1000; transition: opacity 0.5s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#lock-screen.unlocked { opacity: 0; pointer-events: none; transform: scale(1.1); }
 
-.grid-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; padding: 0 60px; }
-.full-span { grid-column: span 2; }
-.card { background: var(--card); border: 1px solid var(--border); border-radius: 35px; padding: 35px; position: relative; }
+/* Grid Adjustments */
+.tab-content { margin-left: var(--side); height: 100vh; padding: 40px; overflow-y: auto; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
 
-/* CURRENT CARD */
-.card-header-flex { display: flex; justify-content: space-between; font-size: 0.85rem; }
-.meta { color: var(--dim); line-height: 1.4; }
-.cond-icon-box { text-align: right; }
-.cond-icon-box i { font-size: 2.2rem; display: block; margin-bottom: 5px; }
-.big-temp-container { margin: 20px 0; }
-#temp-val { font-size: 12rem; line-height: 0.85; letter-spacing: -8px; }
-.deg { font-size: 4.5rem; vertical-align: top; margin-left: 10px; }
-.metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); padding-top: 25px; margin-top: 20px; }
-.m-box label { display: block; font-size: 0.65rem; color: var(--dim); margin-bottom: 8px; letter-spacing: 1px; }
-.m-box b { font-family: 'Cormorant Garamond'; font-size: 1.8rem; font-weight: 400; }
-.feels-bar { font-size: 0.9rem; color: var(--dim); margin-top: 25px; }
-.feels-bar b { color: #fff; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* HOURLY BLOCKS */
-.h-head { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 0.85rem; }
-.h-row { display: flex; justify-content: space-between; }
-.h-block { background: #0c0c0c; border: 1px solid var(--border); border-radius: 20px; width: 11.5%; padding: 25px 10px; text-align: center; }
-.h-block span { font-size: 0.8rem; color: var(--dim); }
-.h-block i { display: block; margin: 15px 0; font-size: 1.6rem; }
-.h-block b { font-family: 'Cormorant Garamond'; font-size: 1.4rem; }
-
-/* FOOTER */
-.dash-footer { text-align: center; font-size: 0.7rem; color: #333; margin: 50px 0; letter-spacing: 2px; }
+/* Pin Grid */
+.pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.pin-grid button { width: 70px; height: 70px; background: #111; border: 1px solid #222; border-radius: 15px; color: #fff; font-size: 1.4rem; cursor: pointer; }
