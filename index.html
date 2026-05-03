@@ -2,118 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Slate Station PRO</title>
+    <title>SLATE WEATHER PRO</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
 </head>
-<body class="dark-theme">
+<body class="slate-theme">
 
-    <!-- LOCK SCREEN -->
     <div id="lock-screen" class="active">
-        <div class="lock-header"><i class="fa-solid fa-lock"></i> PRIVATE WEATHER</div>
-        <div class="lock-content">
-            <h1 id="lock-time" class="serif">11:24 PM</h1>
-            <p id="lock-date">Saturday, May 2</p>
-            <div id="lock-precip" class="precip-mini">Loading accumulation...</div>
-        </div>
-        <div class="pin-card">
-            <div class="pin-dots" id="pin-dots"><span></span><span></span><span></span><span></span></div>
-            <div class="pin-grid">
-                <button onclick="addPin('1')">1</button><button onclick="addPin('2')">2</button><button onclick="addPin('3')">3</button>
-                <button onclick="addPin('4')">4</button><button onclick="addPin('5')">5</button><button onclick="addPin('6')">6</button>
-                <button onclick="addPin('7')">7</button><button onclick="addPin('8')">8</button><button onclick="addPin('9')">9</button>
-                <button class="small-txt" onclick="submitPin()">ENTER</button><button onclick="addPin('0')">0</button><button onclick="clearPin()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="scanner-line"></div>
+        <div class="lock-ui">
+            <h1 class="glitch">SLATE SYSTEM</h1>
+            <div id="pin-display" class="pin-hidden">••••</div>
+            <div class="numpad">
+                <!-- Numpad 0-9 and Enter generated in JS -->
             </div>
-            <p class="pin-footer">DEFAULT PASSCODE: 1234 • CHANGE IN SETTINGS</p>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
     <div id="dashboard" class="hidden">
-        <nav class="side-tabs">
-            <button class="tab-btn active" onclick="showTab('tab-current')"><i class="fa-solid fa-cloud-bolt"></i><span>Current</span></button>
-            <button class="tab-btn" onclick="showTab('tab-spc')"><i class="fa-solid fa-shield-halved"></i><span>SPC</span></button>
-            <button class="tab-btn" onclick="showTab('tab-hourly')"><i class="fa-solid fa-clock"></i><span>72h</span></button>
-            <button class="tab-btn" onclick="showTab('tab-daily')"><i class="fa-solid fa-calendar-days"></i><span>10 Day</span></button>
-            <button class="tab-btn" onclick="showTab('tab-meso')"><i class="fa-solid fa-tornado"></i><span>Meso</span></button>
-            <button class="tab-btn" onclick="showTab('tab-local')"><i class="fa-solid fa-bullhorn"></i><span>Local</span></button>
-            <button class="tab-btn" onclick="showTab('tab-radar')"><i class="fa-solid fa-satellite-dish"></i><span>Radar</span></button>
-            <button class="tab-btn settings-btn" onclick="showTab('tab-settings')"><i class="fa-solid fa-gear"></i></button>
-        </nav>
+        <header>
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#00ff00"/><path d="M50 10v20M50 70v20M10 50h20M70 50h20" stroke="#00ff00" stroke-width="5"/></svg>
+                <span>SLATE <span class="green">WEATHER</span></span>
+            </div>
+            <nav class="tabs">
+                <button onclick="showTab(1)" class="active">CURRENT</button>
+                <button onclick="showTab(2)">SPC OUTLOOK</button>
+                <button onclick="showTab(3)">MESOSCALE</button>
+                <button onclick="showTab(4)">14-DAY</button>
+                <button onclick="showTab(5)">72-HR</button>
+            </nav>
+        </header>
 
-        <main class="tab-content">
-            <!-- TAB 1: CURRENT -->
-            <section id="tab-current" class="tab-panel active">
-                <div class="alert-banner hidden" id="severe-alerts"></div>
-                <div class="current-main">
-                    <h1 class="serif">Chicago O'Hare <small>US</small></h1>
-                    <div class="hero-temp">
-                        <div class="temp-val serif" id="main-temp">50</div><span class="unit serif">°F</span>
-                        <div class="animated-icon" id="main-weather-icon"></div>
+        <main>
+            <!-- Tab 1: Current -->
+            <section id="tab-1" class="tab-content active">
+                <div class="hero-grid">
+                    <div class="card live-data">
+                        <div id="live-icon"></div>
+                        <h2 id="temp-big">--°</h2>
+                        <div class="accum-box">
+                            <span>SNOW: <b id="snow-val">0.0"</b></span>
+                            <span>RAIN: <b id="rain-val">0.0"</b></span>
+                        </div>
                     </div>
-                    <div class="live-metrics">
-                        <div class="met-card">Rain Accum: <b id="rain-val">0.00"</b></div>
-                        <div class="met-card">Snow Accum: <b id="snow-val">0.0"</b></div>
-                        <div class="met-card">Lightning (15mi): <b id="lightning-val">None</b></div>
+                    <div class="card alert-list">
+                        <h3><i class="fa-solid fa-bolt"></i> LIVE ALERTS</h3>
+                        <div id="alert-feed"></div>
                     </div>
                 </div>
             </section>
 
-            <!-- TAB 2: SPC (Sub-tabs) -->
-            <section id="tab-spc" class="tab-panel">
-                <div class="sub-nav">
-                    <button onclick="loadSPC('1')">Day 1</button><button onclick="loadSPC('2')">Day 2</button>
-                    <button onclick="loadSPC('3')">Day 3</button><button onclick="loadSPC('4')">Day 4-8</button>
-                </div>
-                <div class="spc-zoom-view">
-                    <img id="spc-img" src="" alt="SPC Outlook">
-                </div>
+            <!-- Tab 2: SPC (Days 1, 2, 3, 4-8) -->
+            <section id="tab-2" class="tab-content">
+                <div class="spc-grid" id="spc-tab-view"></div>
             </section>
 
-            <!-- TAB 3: 72H HOURLY -->
-            <section id="tab-hourly" class="tab-panel">
-                <div class="hourly-long-grid" id="hourly-72-container"></div>
+            <!-- Tab 3: Mesoscale -->
+            <section id="tab-3" class="tab-content">
+                <div class="card terminal" id="mcd-feed">Loading MDs...</div>
             </section>
 
-            <!-- TAB 4: 10 DAY -->
-            <section id="tab-daily" class="tab-panel">
-                <div class="daily-10-grid" id="daily-10-container"></div>
+            <!-- Tab 4: 14-Day -->
+            <section id="tab-4" class="tab-content">
+                <div class="long-range-grid" id="long-range-view"></div>
             </section>
 
-            <!-- TAB 5: MESOSCALE -->
-            <section id="tab-meso" class="tab-panel">
-                <div id="meso-container" class="terminal-view">Fetching Mesoscale Discussions...</div>
-            </section>
-
-            <!-- TAB 6: LOCAL AREA -->
-            <section id="tab-local" class="tab-panel">
-                <div class="local-flex">
-                    <div class="card terminal-view" id="afd-text">Local Area Discussion</div>
-                    <div class="card" id="story-slideshow"><img id="story-img" src=""></div>
-                </div>
-            </section>
-
-            <!-- TAB 7: RADAR -->
-            <section id="tab-radar" class="tab-panel">
-                <iframe src="https://www.rainviewer.com/map.html?loc=41.9742,-87.9073,8&controlPanel=1&defaultLayer=radar" width="100%" height="100%" frameborder="0"></iframe>
-            </section>
-
-            <!-- TAB 8: SETTINGS -->
-            <section id="tab-settings" class="tab-panel">
-                <div class="card">
-                    <h3>SYSTEM SETTINGS</h3>
-                    <div class="setting-item">Theme: <select id="theme-sel" onchange="updateTheme()"><option value="dark">Dark</option><option value="light">Light</option></select></div>
-                    <div class="setting-item">Units: <select id="unit-sel"><option value="f">Fahrenheit</option><option value="c">Celsius</option></select></div>
-                    <button class="lock-btn" onclick="lockSystem()">Lock Screen</button>
-                </div>
+            <!-- Tab 5: 72-Hourly -->
+            <section id="tab-5" class="tab-content">
+                <div class="hourly-table" id="hourly-72-view"></div>
             </section>
         </main>
-        <footer class="pixel-footer">POWERED BY OPENWEATHERMAP • FOR YOUR EYES ONLY</footer>
     </div>
 
     <script src="config.js"></script>
+    <script src="icons.js"></script>
     <script src="auth.js"></script>
+    <script src="spc.js"></script>
+    <script src="nws.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
