@@ -1,34 +1,32 @@
-:root {
-    --bg: #050505;
-    --slate: #1a1c1e;
-    --green: #00ff00;
-    --green-dim: rgba(0, 255, 0, 0.15);
-    --border: #2a2d30;
-}
-
+:root { --bg: #000; --slate: #0d0d0d; --green: #00ff00; --border: #1a1a1a; }
 body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; }
-.green { color: var(--green); }
-.serif { font-family: 'Orbitron', sans-serif; }
+.orbitron { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+.green { color: var(--green); text-shadow: 0 0 10px var(--green); }
+.hidden { display: none !important; }
 
-/* Sci-Fi Lock Screen */
-#lock-screen { position: fixed; inset: 0; background: #000; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-.scanner-line { position: absolute; width: 100%; height: 2px; background: var(--green); top: 0; animation: scan 4s linear infinite; box-shadow: 0 0 15px var(--green); }
+/* Lock Screen */
+#lock-screen { position: fixed; inset: 0; background: #000; z-index: 999; display: flex; align-items: center; justify-content: center; }
+.scanline { position: absolute; width: 100%; height: 2px; background: rgba(0,255,0,0.3); top: 0; animation: scan 3s linear infinite; }
 @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+.numpad { display: grid; grid-template-columns: repeat(3, 70px); gap: 15px; margin-top: 20px; }
+.numpad button { height: 70px; border-radius: 50%; border: 1px solid #222; background: transparent; color: var(--green); cursor: pointer; font-size: 1.2rem; }
 
-.lock-ui h1 { font-family: 'Orbitron'; font-size: 1.5rem; letter-spacing: 5px; color: var(--green); margin-bottom: 30px; }
-.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-.numpad button { width: 70px; height: 70px; border: 1px solid var(--green-dim); background: transparent; color: var(--green); font-family: 'Orbitron'; border-radius: 50%; cursor: pointer; transition: 0.3s; }
-.numpad button:hover { background: var(--green-dim); box-shadow: 0 0 15px var(--green-dim); }
+/* Dashboard */
+header { display: flex; justify-content: space-between; padding: 20px 40px; background: var(--slate); border-bottom: 1px solid var(--border); }
+.slate-logo { display: flex; align-items: center; font-size: 1.2rem; }
+.sun-merge { width: 25px; height: 25px; background: var(--green); border-radius: 50%; margin-right: 10px; box-shadow: 0 0 15px var(--green); }
+nav .t-btn { background: none; border: none; color: #555; font-family: 'Orbitron'; cursor: pointer; margin-left: 20px; padding-bottom: 5px; }
+nav .t-btn.active { color: var(--green); border-bottom: 2px solid var(--green); }
 
 /* Tabs */
-header { background: var(--slate); padding: 15px 40px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); }
-.tabs button { background: none; border: none; color: #888; font-family: 'Orbitron'; font-size: 0.7rem; padding: 10px 20px; cursor: pointer; }
-.tabs button.active { color: var(--green); border-bottom: 2px solid var(--green); }
+.tab { display: none; padding: 40px; }
+.tab.active { display: block; animation: fadeIn 0.5s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* Cards & Content */
-.card { background: var(--slate); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-.terminal { font-family: monospace; color: var(--green); overflow-y: auto; height: 600px; background: #000; }
+.live-hero { text-align: center; margin-bottom: 50px; }
+#main-temp { font-size: 8rem; margin: 10px 0; font-weight: 300; }
+.terminal { background: #050505; color: var(--green); padding: 20px; border: 1px solid #111; font-family: monospace; height: 500px; overflow-y: auto; }
 
-.anim-weather { width: 100px; }
-.bolt { animation: flicker 0.5s infinite; }
-@keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+/* Animated Icons */
+.bolt-anim { animation: flash 1s infinite; }
+@keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
