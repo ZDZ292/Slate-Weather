@@ -4,141 +4,111 @@
     <meta charset="UTF-8">
     <title>SlateWeather PRO</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="dark-mode">
+<body>
 
-    <!-- LOCK SCREEN (Matches Screenshot 3) -->
+    <!-- LOCK SCREEN (Matches Screenshot 2026-05-02 11.09.51 AM_4.png) -->
     <div id="lock-screen" class="active">
-        <div class="lock-label"><i class="fa-solid fa-lock"></i> PRIVATE WEATHER</div>
-        <div class="lock-clock-container">
+        <div class="lock-header"><i class="fa-solid fa-lock"></i> PRIVATE WEATHER</div>
+        <div class="lock-clock-box">
             <h1 id="lock-time" class="serif">11:09 AM</h1>
             <p id="lock-date">Saturday, May 2</p>
         </div>
-        <div class="pin-card">
-            <div class="pin-indicators" id="pin-dots">
-                <span></span><span></span><span></span><span></span>
-            </div>
-            <div class="pin-grid">
+        <div class="pin-container">
+            <div class="pin-dots" id="pin-dots"><span></span><span></span><span></span><span></span></div>
+            <div class="pin-pad">
                 <button onclick="addPin('1')">1</button><button onclick="addPin('2')">2</button><button onclick="addPin('3')">3</button>
                 <button onclick="addPin('4')">4</button><button onclick="addPin('5')">5</button><button onclick="addPin('6')">6</button>
                 <button onclick="addPin('7')">7</button><button onclick="addPin('8')">8</button><button onclick="addPin('9')">9</button>
-                <button class="small-txt" onclick="submitPin()">ENTER</button><button onclick="addPin('0')">0</button><button onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
+                <button class="txt-btn" onclick="submitPin()">ENTER</button><button onclick="addPin('0')">0</button><button onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
             </div>
-            <p class="pin-footer">DEFAULT PASSCODE: 1234 • CHANGE IN SETTINGS</p>
+            <p class="pin-hint">DEFAULT PASSCODE: 1234 • CHANGE IN SETTINGS</p>
         </div>
     </div>
 
     <!-- MAIN DASHBOARD -->
     <div id="dashboard" class="hidden">
-        <header class="dash-header">
-            <div class="location-group">
-                <span class="sys-label">PRIVATE WEATHER</span>
+        <header class="top-nav">
+            <div class="nav-left">
+                <span class="small-label">PRIVATE WEATHER</span>
                 <h1 class="serif"><i class="fa-solid fa-location-dot"></i> Chicago O'Hare <small>US</small></h1>
             </div>
-            <div class="nav-icons">
-                <button onclick="refreshAll()"><i class="fa-solid fa-rotate"></i></button>
-                <button onclick="toggleTech()"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="nav-right">
+                <button onclick="initDashboard()"><i class="fa-solid fa-rotate"></i></button>
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
                 <button><i class="fa-solid fa-gear"></i></button>
                 <button onclick="location.reload()"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
             </div>
         </header>
 
-        <main class="dash-content">
-            <div class="top-row">
-                <!-- Current Card (Matches Screenshot 2) -->
-                <div class="card current-card">
-                    <div class="now-header">
-                        <div class="now-loc">NOW • ROSEMONT, US<br><span id="dash-clock">11:09 AM local</span></div>
-                        <div class="now-cond">
-                            <i id="curr-icon" class="fa-solid fa-cloud"></i>
-                            <span id="curr-desc">Scattered Clouds</span>
-                        </div>
+        <main class="grid-layout">
+            <!-- Row 1: Current & Forecast -->
+            <div class="card current-card">
+                <div class="card-header-flex">
+                    <div class="meta">NOW • ROSEMONT, US<br><span id="dash-clock">11:09 AM local</span></div>
+                    <div class="cond-icon-box">
+                        <i id="main-icon" class="fa-solid fa-cloud"></i>
+                        <span id="main-desc">Scattered Clouds</span>
                     </div>
-                    <div class="temp-block">
-                        <span id="curr-temp" class="serif">50</span><span class="unit-serif serif">°F</span>
-                    </div>
-                    <div class="metrics">
-                        <div class="m-item"><label><i class="fa-solid fa-wind"></i> WIND</label><b id="m-wind">8 mph</b></div>
-                        <div class="m-item"><label><i class="fa-solid fa-droplet"></i> HUMIDITY</label><b id="m-hum">46%</b></div>
-                        <div class="m-item"><label><i class="fa-solid fa-gauge"></i> PRESSURE</label><b id="m-pres">1020 hPa</b></div>
-                        <div class="m-item"><label><i class="fa-solid fa-eye"></i> VISIBILITY</label><b id="m-vis">10 km</b></div>
-                    </div>
-                    <p class="summary-line">Feels like <b id="m-feels">47°F</b> • L <span id="m-low">48°F</span> • H <span id="m-high">52°F</span></p>
                 </div>
+                <div class="big-temp-container">
+                    <span id="temp-val" class="serif">50</span><span class="serif deg">°F</span>
+                </div>
+                <div class="metrics-row">
+                    <div class="m-box"><label><i class="fa-solid fa-wind"></i> WIND</label><b id="v-wind">8 mph</b></div>
+                    <div class="m-box"><label><i class="fa-solid fa-droplet"></i> HUMIDITY</label><b id="v-hum">46%</b></div>
+                    <div class="m-box"><label><i class="fa-solid fa-gauge"></i> PRESSURE</label><b id="v-pres">1020 hPa</b></div>
+                    <div class="m-box"><label><i class="fa-solid fa-eye"></i> VISIBILITY</label><b id="v-vis">10 km</b></div>
+                </div>
+                <div class="feels-bar">Feels like <b id="v-feels">47°F</b> • L <span id="v-low">48°F</span> • H <span id="v-high">52°F</span></div>
+            </div>
 
-                <!-- 7-Day Card (Matches Screenshot 2) -->
-                <div class="card forecast-card">
-                    <h3>7-DAY FORECAST</h3>
-                    <div id="daily-list" class="daily-rows"></div>
-                    <div class="unit-footer">UNIT • °F</div>
+            <div class="card forecast-card">
+                <h3>7-DAY FORECAST</h3>
+                <div id="daily-list"></div>
+                <div class="unit-tag">UNIT • °F</div>
+            </div>
+
+            <!-- Row 2: Hourly -->
+            <div class="card hourly-card full-span">
+                <div class="h-head"><h3>NEXT HOURS</h3><span>8 entries</span></div>
+                <div id="hourly-list" class="h-row"></div>
+            </div>
+
+            <!-- Row 3: Bottom Widgets -->
+            <div class="card bottom-card">
+                <h3>SUN ARC</h3>
+                <div class="sun-arc-wrap"><div class="arc-line"></div><div id="sun-point" class="sun-point"></div></div>
+                <div class="sun-times">
+                    <span><i class="fa-solid fa-sunrise"></i> <b id="v-rise">5:46 AM</b></span>
+                    <span><b id="v-set">7:50 PM</b> <i class="fa-solid fa-sunset"></i></span>
                 </div>
             </div>
 
-            <!-- Hourly (Matches Screenshot 1) -->
-            <div class="card hourly-card">
-                <div class="h-header"><h3>NEXT HOURS</h3><span>8 entries</span></div>
-                <div id="hourly-list" class="h-flex"></div>
+            <div class="card bottom-card">
+                <h3>UV INDEX</h3>
+                <div class="uv-track"><div id="uv-fill"></div></div>
+                <p class="uv-msg">UV data tracking active.</p>
             </div>
 
-            <div class="bottom-row">
-                <div class="card small-card">
-                    <h3>SUN ARC</h3>
-                    <div class="sun-arc-box">
-                        <div class="arc-svg"></div>
-                        <div id="sun-dot" class="sun-dot"></div>
-                    </div>
-                    <div class="sun-times">
-                        <span><i class="fa-solid fa-sunrise"></i> <b id="s-rise">5:46 AM</b></span>
-                        <span><b id="s-set">7:50 PM</b> <i class="fa-solid fa-sunset"></i></span>
-                    </div>
-                </div>
-
-                <div class="card small-card">
-                    <h3>UV INDEX</h3>
-                    <div class="uv-track"><div id="uv-bar"></div></div>
-                    <p class="uv-label">UV data active.</p>
-                </div>
-
-                <div class="card small-card">
-                    <h3>AIR QUALITY</h3>
-                    <div class="aqi-main"><span id="aqi-num" class="serif">2</span> <span id="aqi-txt" class="fair">Fair</span></div>
-                    <div class="aqi-grid">
-                        <span>PM2.5 <b id="aqi-pm25">2</b></span>
-                        <span>PM10 <b id="aqi-pm10">3</b></span>
-                        <span>O<sub>3</sub> <b id="aqi-o3">92</b></span>
-                        <span>NO<sub>2</sub> <b id="aqi-no2">2</b></span>
-                    </div>
+            <div class="card bottom-card">
+                <h3>AIR QUALITY</h3>
+                <div class="aqi-main"><span id="v-aqi" class="serif">2</span> <span class="aqi-status">Fair</span></div>
+                <div class="aqi-grid">
+                    <span>PM2.5 <b id="v-pm25">2</b></span>
+                    <span>PM10 <b id="v-pm10">3</b></span>
+                    <span>O<sub>3</sub> <b id="v-o3">92</b></span>
+                    <span>NO<sub>2</sub> <b id="v-no2">2</b></span>
                 </div>
             </div>
-            
-            <!-- Technical Overlay (SPC/NWS) -->
-            <div id="tech-overlay" class="hidden">
-                <div class="tech-grid">
-                    <div class="card">
-                        <h3>SPC OUTLOOKS (D1-D8)</h3>
-                        <div class="spc-gallery" id="spc-images"></div>
-                    </div>
-                    <div class="card">
-                        <h3>NWS AFD / HWO</h3>
-                        <div id="nws-text" class="terminal">Loading NWS technical data...</div>
-                    </div>
-                    <div class="card">
-                        <h3>WEATHER STORY</h3>
-                        <img id="nws-story" src="" style="width:100%; border-radius:10px;">
-                    </div>
-                </div>
-            </div>
-
-            <footer class="legal-footer">POWERED BY OPEN-METEO & WEATHERAPI • FOR YOUR EYES ONLY</footer>
         </main>
+        <footer class="dash-footer">POWERED BY OPENWEATHERMAP • FOR YOUR EYES ONLY</footer>
     </div>
 
     <script src="config.js"></script>
     <script src="auth.js"></script>
     <script src="app.js"></script>
-    <script src="spc.js"></script>
-    <script src="nws.js"></script>
 </body>
 </html>
