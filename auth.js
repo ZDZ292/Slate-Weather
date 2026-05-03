@@ -1,41 +1,28 @@
-let inputPin = "";
+let pin = "";
+const target = "2014";
 
-// Keyboard Support
-window.addEventListener('keydown', (e) => {
-    if (document.getElementById('lock-screen').classList.contains('active')) {
-        if (e.key >= '0' && e.key <= '9') addPin(e.key);
-        if (e.key === 'Enter') submitPin();
-        if (e.key === 'Backspace') clearPin();
-    }
-});
+window.onload = () => {
+    const pad = document.querySelector('.numpad');
+    [1,2,3,4,5,6,7,8,9,'CLR',0,'ENT'].forEach(val => {
+        const btn = document.createElement('button');
+        btn.innerText = val;
+        btn.onclick = () => handleInput(val);
+        pad.appendChild(btn);
+    });
+};
 
-function addPin(num) {
-    if (inputPin.length < 4) {
-        inputPin += num;
-        updateDots();
-    }
+function handleInput(v) {
+    if (v === 'CLR') pin = "";
+    else if (v === 'ENT') {
+        if (pin === target) unlock();
+        else pin = "";
+    } else if (pin.length < 4) pin += v;
+    
+    document.getElementById('pin-display').innerText = "•".repeat(pin.length) || "••••";
 }
 
-function updateDots() {
-    const dots = document.querySelectorAll('#pin-dots span');
-    dots.forEach((dot, i) => dot.className = i < inputPin.length ? 'filled' : '');
+function unlock() {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('dashboard').classList.remove('hidden');
+    initApp();
 }
-
-function submitPin() {
-    if (inputPin === CONFIG.PASSCODE) {
-        const ls = document.getElementById('lock-screen');
-        ls.classList.add('unlocked');
-        setTimeout(() => { ls.classList.remove('active'); initDashboard(); }, 500);
-    } else {
-        clearPin();
-    }
-}
-
-function updateClock() {
-    const now = new Date();
-    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-    const date = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-    document.getElementById('lock-time').innerText = time;
-    document.getElementById('lock-date').innerText = date;
-}
-setInterval(updateClock, 1000);
