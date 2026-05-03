@@ -1,46 +1,38 @@
+function showTab(tabId) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+
 async function initDashboard() {
-    const { LAT, LON, WEATHER_API_KEY } = CONFIG;
+    const res = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${CONFIG.WEATHER_API_KEY}&q=${CONFIG.LAT},${CONFIG.LON}&days=10&aqi=yes&alerts=yes`);
+    const data = await res.json();
 
-    try {
-        const res = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${LAT},${LON}&days=7&aqi=yes`);
-        const data = await res.json();
+    // Populate Current
+    document.getElementById('main-temp').innerText = Math.round(data.current.temp_f);
+    document.getElementById('rain-val').innerText = `${data.current.precip_in}"`;
+    document.getElementById('lock-precip').innerText = `Current Accumulation: ${data.current.precip_in}"`;
 
-        // Map Data to UI
-        document.getElementById('temp-val').innerText = Math.round(data.current.temp_f);
-        document.getElementById('main-desc').innerText = data.current.condition.text;
-        document.getElementById('v-wind').innerText = `${Math.round(data.current.wind_mph)} mph`;
-        document.getElementById('v-hum').innerText = `${data.current.humidity}%`;
-        document.getElementById('v-pres').innerText = `${data.current.pressure_mb} hPa`;
-        document.getElementById('v-vis').innerText = `${data.current.vis_km} km`;
-        document.getElementById('v-feels').innerText = `${Math.round(data.current.feelslike_f)}°F`;
-        document.getElementById('v-low').innerText = `${Math.round(data.forecast.forecastday[0].day.mintemp_f)}°F`;
-        document.getElementById('v-high').innerText = `${Math.round(data.forecast.forecastday[0].day.maxtemp_f)}°F`;
+    // Alerts
+    const alertBox = document.getElementById('severe-alerts');
+    if (data.alerts.alert.length > 0) {
+        alertBox.classList.remove('hidden');
+        alertBox.innerHTML = `⚠️ SEVERE ALERT: ${data.alerts.alert[0].event}`;
+    }
 
-        // Hourly
-        const hList = document.getElementById('hourly-list');
-        hList.innerHTML = '';
-        data.forecast.forecastday[0].hour.filter((_, i) => i % 3 === 0).slice(0, 8).forEach(hr => {
-            const timeStr = new Date(hr.time).toLocaleTimeString([], {hour: 'numeric'});
-            hList.innerHTML += `
-                <div class="h-block">
-                    <span>${timeStr}</span>
-                    <i class="fa-solid fa-cloud"></i>
-                    <b>${Math.round(hr.temp_f)}°F</b>
-                </div>`;
-        });
+    // 72 Hour Forecast
+    const hourlyContainer = document.getElementById('hourly-72-container');
+    // Logic to map data.forecast.forecastday[0,1,2].hour here...
+}
 
-        // 7-Day
-        const dList = document.getElementById('daily-list');
-        dList.innerHTML = '';
-        data.forecast.forecastday.forEach(day => {
-            const dayName = new Date(day.date + 'T00:00:00').toLocaleDateString('en-US', {weekday: 'short'});
-            dList.innerHTML += `
-                <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #111">
-                    <span>${dayName}</span>
-                    <span><i class="fa-solid fa-cloud"></i></span>
-                    <span class="serif">${Math.round(day.day.mintemp_f)}° · ${Math.round(day.day.maxtemp_f)}°</span>
-                </div>`;
-        });
-
-    } catch (err) { console.error("Load failed", err); }
+function loadSPC(day) {
+    const img = document.getElementById('spc-img');
+    const urls = {
+        '1': 'https://www.spc.noaa.gov/products/outlook/day1otlk_2000.gif',
+        '2': 'https://www.spc.noaa.gov/products/outlook/day2otlk_2000.gif',
+        '3': 'https://www.spc.noaa.gov/products/outlook/day3otlk_2000.gif',
+        '4': 'https://www.spc.noaa.gov/products/exper/day4-8/day48prob.gif'
+    };
+    img.src = urls[day];
 }
