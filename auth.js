@@ -1,7 +1,7 @@
 let inputPin = "";
 
+// Keyboard Support
 window.addEventListener('keydown', (e) => {
-    // Only listen if lock screen is active
     if (document.getElementById('lock-screen').classList.contains('active')) {
         if (e.key >= '0' && e.key <= '9') addPin(e.key);
         if (e.key === 'Enter') submitPin();
@@ -9,46 +9,33 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-function addPin(val) {
+function addPin(num) {
     if (inputPin.length < 4) {
-        inputPin += val;
-        updatePinUI();
+        inputPin += num;
+        updateDots();
     }
 }
 
-function updatePinUI() {
+function updateDots() {
     const dots = document.querySelectorAll('#pin-dots span');
-    dots.forEach((dot, i) => {
-        dot.className = i < inputPin.length ? 'filled' : '';
-    });
-}
-
-function clearPin() {
-    inputPin = "";
-    updatePinUI();
+    dots.forEach((dot, i) => dot.className = i < inputPin.length ? 'filled' : '');
 }
 
 function submitPin() {
     if (inputPin === CONFIG.PASSCODE) {
-        document.getElementById('lock-screen').classList.remove('active');
-        document.getElementById('dashboard').classList.remove('hidden');
-        initDashboard();
+        const ls = document.getElementById('lock-screen');
+        ls.classList.add('unlocked');
+        setTimeout(() => { ls.classList.remove('active'); initDashboard(); }, 500);
     } else {
-        alert("ACCESS DENIED");
         clearPin();
     }
 }
 
-function updateLiveClocks() {
+function updateClock() {
     const now = new Date();
     const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
     const date = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-    
     document.getElementById('lock-time').innerText = time;
     document.getElementById('lock-date').innerText = date;
-    if(document.getElementById('dash-clock')) {
-        document.getElementById('dash-clock').innerText = time + " local";
-    }
 }
-setInterval(updateLiveClocks, 1000);
-updateLiveClocks();
+setInterval(updateClock, 1000);
