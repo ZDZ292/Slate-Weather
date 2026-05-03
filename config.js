@@ -3,6 +3,6 @@ const CONFIG = {
     PIRATE_WEATHER_KEY: '298c19958784d128d542095f90378822',
     LAT: 41.9742, 
     LON: -87.9073,
-    OFFICE: 'LOT',
+    OFFICE: 'LOT', // NWS Chicago
     PASSCODE: '1234'
 };
