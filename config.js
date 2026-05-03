@@ -2,7 +2,7 @@ const CONFIG = {
     WEATHER_API_KEY: '3448f220268541c491e161543242604',
     LAT: 41.9742,
     LON: -87.9073,
-    STATION: 'KORD', // Chicago O'Hare
-    OFFICE: 'LOT',
-    PASSCODE: '1234'
+    STATION: 'KORD',
+    PASSCODE: '2014', // Updated password
+    THEME: 'SLATE_GREEN'
 };
