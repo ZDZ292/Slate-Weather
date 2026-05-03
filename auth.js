@@ -1,47 +1,55 @@
 let inputPin = "";
 
-function updateLiveClock() {
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-    const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-    
-    // Update Lock Screen
-    const lockClock = document.getElementById('lock-clock');
-    if(lockClock) lockClock.innerText = timeStr;
-    const lockDate = document.getElementById('lock-date');
-    if(lockDate) lockDate.innerText = dateStr;
-    
-    // Update Dashboard Small Clock
-    const dashClock = document.getElementById('current-time-small');
-    if(dashClock) dashClock.innerText = timeStr + " local";
-}
-
-setInterval(updateLiveClock, 1000);
-updateLiveClock();
+// Keyboard Support
+window.addEventListener('keydown', (e) => {
+    if (document.getElementById('lock-screen').classList.contains('active')) {
+        if (e.key >= 0 && e.key <= 9) addPin(e.key);
+        if (e.key === "Enter") submitPin();
+        if (e.key === "Backspace") clearPin();
+    }
+});
 
 function addPin(val) {
     if (inputPin.length < 4) {
         inputPin += val;
-        updatePinUI();
+        updateDots();
     }
 }
 
-function updatePinUI() {
-    const dots = document.querySelectorAll('#dots span');
+function updateDots() {
+    const dots = document.querySelectorAll('#pin-dots span');
     dots.forEach((dot, i) => {
-        dot.style.background = i < inputPin.length ? 'white' : 'transparent';
+        dot.className = i < inputPin.length ? 'active' : '';
     });
 }
 
-function clearPin() { inputPin = ""; updatePinUI(); }
+function clearPin() {
+    inputPin = "";
+    updateDots();
+}
 
 function submitPin() {
     if (inputPin === CONFIG.PASSCODE) {
-        document.getElementById('lock-screen').classList.add('hidden');
+        document.getElementById('lock-screen').classList.remove('active');
         document.getElementById('dashboard').classList.remove('hidden');
-        initWeather();
+        initDashboard();
     } else {
-        alert("ACCESS DENIED");
+        alert("DENIED");
         clearPin();
     }
 }
+
+// Real-time Live Clock
+function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    const date = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    
+    document.getElementById('lock-time').innerText = time;
+    document.getElementById('lock-date').innerText = date;
+    if(document.getElementById('dash-clock')) {
+        document.getElementById('dash-clock').innerText = time + " local";
+    }
+}
+setInterval(updateClock, 1000);
+updateClock();
