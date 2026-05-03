@@ -1,15 +1,16 @@
 async function loadSPC() {
-    const view = document.getElementById('spc-tab-view');
-    const days = ['Day 1', 'Day 2', 'Day 3', 'Day 4-8'];
-    view.innerHTML = days.map(d => `
-        <div class="card">
-            <h3>${d} Outlook</h3>
-            <div class="prob-bars">
-                <span>Tornado: 5%</span><div class="bar"><div style="width:5%; background:red"></div></div>
-                <span>Wind: 15%</span><div class="bar"><div style="width:15%; background:blue"></div></div>
-                <span>Hail: 10%</span><div class="bar"><div style="width:10%; background:green"></div></div>
-            </div>
-            <img src="https://www.spc.noaa.gov/products/outlook/day1otlk_2000.gif" style="width:100%">
+    const list = document.getElementById('spc-list');
+    const days = [
+        { name: 'Day 1', img: 'https://www.spc.noaa.gov/products/outlook/day1otlk_2000.gif' },
+        { name: 'Day 2', img: 'https://www.spc.noaa.gov/products/outlook/day2otlk_2000.gif' },
+        { name: 'Day 3', img: 'https://www.spc.noaa.gov/products/outlook/day3otlk_2000.gif' }
+    ];
+
+    list.innerHTML = days.map(d => `
+        <div class="card" style="background:#0a0a0a; border:1px solid #222; margin-bottom:20px; padding:20px; border-radius:10px;">
+            <h3 class="orbitron green">${d.name} Outlook</h3>
+            <p>Tornado: 5% | Wind: 15% | Hail: 10%</p>
+            <img src="${d.img}?t=${Date.now()}" style="width:100%; border:1px solid #333;">
         </div>
     `).join('');
 }
