@@ -2,57 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SlateWeather | Arctic Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slate-Weather | Pro Console</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <!-- FROSTED LOCK SCREEN -->
-    <div id="lock-screen" style="position:fixed; inset:0; z-index:999; display:flex; align-items:center; justify-content:center;">
-        <div class="liquid-glass" style="width:450px; padding:60px; text-align:center;">
-            <h1 class="orbitron" style="font-size:2rem; margin-bottom:10px; color:#fff;">SLATE<span style="font-weight:300;">WEATHER</span></h1>
-            <div id="pin-view" style="font-size:2rem; letter-spacing:10px; margin-bottom:35px; min-height:40px; color:rgba(255,255,255,0.8);">....</div>
-            <div id="keypad" class="key-container"></div>
-        </div>
-    </div>
-
-    <!-- MAIN UI -->
-    <div id="app" class="hidden">
-        <header class="header-glass">
-            <div class="logo orbitron" style="font-size:1.4rem;">SLATE<span style="font-weight:300;">WEATHER</span></div>
-            <input type="text" id="city-search" class="search-frost" placeholder="LOCATING STATION...">
-            <nav style="display:flex; gap:15px;">
-                <button onclick="tab('curr')" class="nav-item active">CURRENT</button>
-                <button onclick="tab('spc')" class="nav-item">SPC</button>
-                <button onclick="tab('meso')" class="nav-item">MESO</button>
-                <button onclick="tab('14d')" class="nav-item">14-DAY</button>
-            </nav>
+    <div id="dynamic-backdrop"></div>
+    <div class="main-console">
+        <header class="search-header">
+            <input type="text" id="city-input" placeholder="Search City (e.g. Norman, OK)...">
+            <button id="search-btn">LOCATE</button>
+            <div id="location-display">--</div>
         </header>
 
-        <main style="padding:40px; display:grid; grid-template-columns: 1.8fr 1fr; gap:30px;">
-            <section class="liquid-glass" style="padding:50px; display:flex; justify-content:space-between; align-items:center;">
-                <div class="main-report">
-                    <h2 id="loc-name" class="orbitron" style="margin:0; opacity:0.7;">CHICAGO</h2>
-                    <h1 id="curr-temp" style="font-size:11rem; font-weight:100; margin:0;">--°</h1>
-                    <div id="weather-desc" style="font-size:1.5rem; text-transform:uppercase; letter-spacing:4px;">INITIALIZING...</div>
+        <nav class="smart-bar">
+            <button class="tab-btn active" data-tab="dash">DASHBOARD</button>
+            <button class="tab-btn" data-tab="extended">EXTENDED</button>
+            <button class="tab-btn" data-tab="nws">NWS AFD</button>
+            <button class="tab-btn" data-tab="radar">RADAR</button>
+            <button class="tab-btn" data-tab="spc">SPC OUTLOOK</button>
+            <button class="tab-btn" data-tab="severe">SEVERE FEED</button>
+            <button class="tab-btn" data-tab="settings">SETTINGS</button>
+        </nav>
+
+        <main class="content-area">
+            <section id="dash" class="tab-pane active">
+                <div class="current-hero">
+                    <div id="main-icon"></div>
+                    <h1 id="main-temp">--°</h1>
+                    <p id="main-desc">--</p>
                 </div>
-                <div id="canvas-3d" style="width:250px; height:250px; background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); border-radius:50%;">
-                    <!-- 3D Icon Injection -->
-                </div>
+                <div class="stats-grid" id="current-stats"></div>
             </section>
 
-            <section class="liquid-glass" style="padding:30px;">
-                <div class="frost-stat"><span>REALFEEL</span><b id="val-feel">--°</b></div>
-                <div class="frost-stat"><span>GUSTS</span><b id="val-wind">-- MPH</b></div>
-                <div class="frost-stat"><span>HUMIDITY</span><b id="val-hum">--%</b></div>
-                <div class="frost-stat"><span>DEW POINT</span><b id="val-dew">--°</b></div>
+            <section id="extended" class="tab-pane">
+                <div class="forecast-list" id="extended-forecast"></div>
+            </section>
+
+            <section id="nws" class="tab-pane">
+                <div class="text-product" id="afd-content">Loading NWS Discussion...</div>
+            </section>
+
+            <section id="radar" class="tab-pane">
+                <div id="radar-container"></div>
+            </section>
+
+            <section id="spc" class="tab-pane">
+                <div class="text-product" id="spc-content">Fetching SPC Outlooks...</div>
+            </section>
+
+            <section id="severe" class="tab-pane">
+                <div id="severe-feed">Scanning for active hazards...</div>
+            </section>
+
+            <section id="settings" class="tab-pane">
+                <div class="settings-card">
+                    <h3>System Configuration</h3>
+                    <p>API Key: <span class="key-mask">52079...952</span></p>
+                    <p>Providers: OpenWeather, OpenMeteo, NWS, SPC, Rainviewer</p>
+                </div>
             </section>
         </main>
     </div>
-
-    <script src="config.js"></script>
-    <script src="auth.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
