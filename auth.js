@@ -1,40 +1,43 @@
-let inputBuffer = "";
-const PIN = CONFIG.PASSCODE;
+let entry = "";
+const keypad = document.getElementById('keypad');
 
-function setupKeypad() {
-    const pad = document.getElementById('keypad');
-    [1,2,3,4,5,6,7,8,9,'C',0,'OK'].forEach(k => {
-        const b = document.createElement('button');
-        b.innerText = k;
-        b.onclick = () => handleInput(k);
-        pad.appendChild(b);
+function initKeypad() {
+    [1,2,3,4,5,6,7,8,9,'C',0,'OK'].forEach(val => {
+        const btn = document.createElement('button');
+        btn.innerText = val;
+        // Universal listeners
+        btn.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            handlePress(val);
+        });
+        keypad.appendChild(btn);
     });
 }
 
+// Physical Keyboard Listener
 window.addEventListener('keydown', (e) => {
-    if (e.key >= 0 && e.key <= 9) handleInput(e.key);
-    if (e.key === 'Enter') handleInput('OK');
-    if (e.key === 'Backspace') handleInput('C');
+    if (e.key >= 0 && e.key <= 9) handlePress(e.key);
+    if (e.key === 'Enter') handlePress('OK');
+    if (e.key === 'Backspace') handlePress('C');
 });
 
-function handleInput(v) {
-    if (v === 'C') inputBuffer = "";
-    else if (v === 'OK') {
-        if (inputBuffer === PIN) unlock();
-        else { inputBuffer = ""; triggerError(); }
-    } else if (inputBuffer.length < 4) {
-        inputBuffer += v;
+function handlePress(val) {
+    if (val === 'C') entry = "";
+    else if (val === 'OK') {
+        if (entry === CONFIG.PASSCODE) {
+            document.getElementById('lock-screen').style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById('lock-screen').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                startDashboard();
+            }, 500);
+        } else {
+            entry = "";
+        }
+    } else if (entry.length < 4) {
+        entry += val;
     }
-    document.getElementById('pin-display').innerText = "•".repeat(inputBuffer.length);
+    document.getElementById('pin-dots').innerText = ".".repeat(entry.length) || "....";
 }
 
-function unlock() {
-    document.getElementById('lock-screen').style.transform = "translateY(-100%)";
-    setTimeout(() => {
-        document.getElementById('lock-screen').classList.add('hidden');
-        document.getElementById('main-ui').classList.remove('hidden');
-        initDashboard();
-    }, 6000);
-}
-
-setupKeypad();
+initKeypad();
