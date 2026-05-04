@@ -1,6 +1,8 @@
 const CONFIG = {
     WEATHER_API_KEY: '3448f220268541c491e161543242604',
+    DEFAULT_CITY: 'Chicago',
     LAT: 41.8781,
     LON: -87.6230,
+    OFFICE: 'LOT',
     PASSCODE: '2014'
 };
