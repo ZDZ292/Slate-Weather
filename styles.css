@@ -1,140 +1,92 @@
 :root {
-    --bg: #020402;
-    --green: #00ff00;
-    --green-glow: rgba(0, 255, 0, 0.4);
-    --glass: rgba(13, 18, 13, 0.75);
-    --border: rgba(0, 255, 0, 0.15);
+    --bg-deep: #050505;
+    --slate-glass: rgba(15, 20, 15, 0.7);
+    --neon-green: #00ff41;
+    --neon-glow: 0 0 15px rgba(0, 255, 65, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 body {
-    background: var(--bg);
-    color: #ffffff;
+    background: radial-gradient(circle at top, #0a1a0a 0%, #000 100%);
+    color: #fff;
     font-family: 'Inter', sans-serif;
     margin: 0;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
-.orbitron { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-.green { color: var(--green); }
-.hidden { display: none !important; }
-
-/* Liquid Glass Effect */
-.liquid-glass {
-    background: var(--glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+/* Liquid Glass Panels */
+.glass-panel {
+    background: var(--slate-glass);
+    backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--glass-border);
     border-radius: 24px;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
 }
 
-/* Lock Screen */
+/* Sci-Fi Lock Screen Revamp */
 #lock-screen {
     position: fixed;
     inset: 0;
-    z-index: 9999;
-    background: radial-gradient(circle at center, #0a120a 0%, #000 100%);
+    z-index: 1000;
+    background: #000;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
-.lock-panel {
+.lock-hex-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(var(--neon-green) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.05;
+}
+
+.pin-pad-glass {
     padding: 50px;
-    text-align: center;
     width: 380px;
+    text-align: center;
 }
 
-.pin-status {
-    font-family: 'Orbitron';
-    font-size: 0.8rem;
-    color: var(--green);
-    margin: 20px 0;
-    letter-spacing: 5px;
-}
-
-.pin-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-.pin-grid button {
-    height: 70px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border);
-    color: #fff;
+.pin-dot {
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: 0.3s;
+    border: 2px solid var(--neon-green);
+    display: inline-block;
+    margin: 0 8px 30px;
 }
 
-.pin-grid button:hover {
-    background: var(--green);
-    color: #000;
-    box-shadow: 0 0 20px var(--green);
+.pin-dot.active {
+    background: var(--neon-green);
+    box-shadow: var(--neon-glow);
 }
 
-/* Header & Search */
-.main-header {
-    margin: 20px 40px;
-    padding: 15px 30px;
+/* Tab Navigation */
+.nav-rail {
+    background: rgba(0,0,0,0.8);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 10px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.slate-logo { display: flex; align-items: center; gap: 12px; }
-.sun-core {
-    width: 28px;
-    height: 28px;
-    background: var(--green);
-    border-radius: 50%;
-    box-shadow: 0 0 15px var(--green);
-}
-
 .search-container {
     background: rgba(255,255,255,0.05);
-    padding: 10px 20px;
-    border-radius: 30px;
-    width: 300px;
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    padding: 5px 20px;
     display: flex;
     align-items: center;
-    border: 1px solid var(--border);
 }
 
 .search-container input {
-    background: none;
+    background: transparent;
     border: none;
     color: #fff;
-    margin-left: 10px;
-    width: 100%;
-    outline: none;
+    padding: 8px;
+    width: 250px;
 }
-
-/* Hero Section */
-.hero-card {
-    margin: 0 40px 20px;
-    padding: 60px;
-    text-align: center;
-}
-
-#curr-temp { font-size: 9rem; margin: 10px 0; line-height: 1; }
-.unit-big { font-size: 3rem; vertical-align: top; color: var(--green); }
-.cond-label { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 4px; color: #888; }
-
-.live-metrics {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    margin-top: 40px;
-    border-top: 1px solid var(--border);
-    padding-top: 40px;
-}
-
-.metric label { display: block; font-size: 0.7rem; color: var(--green); margin-bottom: 10px; }
-.metric b { font-size: 2rem; font-family: 'Orbitron'; }
-
-/* Icons */
-.svg-icon { width: 120px; height: 120px; fill: var(--green); filter: drop-shadow(0 0 10px var(--green)); }
