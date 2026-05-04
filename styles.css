@@ -1,97 +1,94 @@
 :root {
-    --frost-bg: rgba(255, 255, 255, 0.05);
-    --frost-border: rgba(255, 255, 255, 0.2);
-    --ice-blue: #aee4ff;
-    --pure-white: #ffffff;
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+    --frost: rgba(255, 255, 255, 0.08);
+    --ice-border: rgba(255, 255, 255, 0.2);
+    --arctic-glow: 0 0 25px rgba(200, 230, 255, 0.4);
+    --text-main: #e0f2ff;
 }
 
 body {
-    background: radial-gradient(circle at 50% 0%, #0a1b2a 0%, #010308 100%);
-    color: var(--pure-white);
+    background: #020508 url('https://images.unsplash.com/photo-1491002052546-bf38f186af56?q=80&w=2708&auto=format&fit=crop') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-main);
     font-family: 'Inter', sans-serif;
     margin: 0;
-    height: 100vh;
     overflow: hidden;
 }
 
-.orbitron { font-family: 'Orbitron', sans-serif; letter-spacing: 3px; }
-.ice-text { color: var(--ice-blue); text-shadow: 0 0 15px rgba(174, 228, 255, 0.6); }
+.orbitron { font-family: 'Orbitron', sans-serif; letter-spacing: 3px; font-weight: 700; }
 .hidden { display: none !important; }
 
-/* EXTREME FROSTED LIQUID GLASS */
+/* EXTREME LIQUID GLASS PANEL */
 .liquid-glass {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.01));
-    backdrop-filter: blur(40px) saturate(120%);
-    -webkit-backdrop-filter: blur(40px) saturate(120%);
-    border: 1px solid var(--frost-border);
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05), var(--glass-shadow);
-    position: relative;
-    overflow: hidden;
+    background: var(--frost);
+    backdrop-filter: blur(50px) saturate(200%);
+    -webkit-backdrop-filter: blur(50px) saturate(200%);
+    border: 1px solid var(--ice-border);
+    box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.05), 0 20px 60px rgba(0, 0, 0, 0.4);
+    border-radius: 40px;
 }
 
-/* LIQUID SHINE ANIMATION */
-.liquid-glass::before {
-    content: '';
-    position: absolute;
-    top: -100%; left: -100%;
-    width: 300%; height: 300%;
-    background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 60%, transparent 80%);
-    transform: rotate(30deg);
-    animation: liquid-shimmer 8s infinite linear;
-    pointer-events: none;
+/* KEYPAD (Refining image_993939.png) */
+.key-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 40px;
 }
 
-@keyframes liquid-shimmer {
-    0% { transform: translateX(-50%) translateY(-50%) rotate(30deg); }
-    100% { transform: translateX(50%) translateY(50%) rotate(30deg); }
-}
-
-/* KEYPAD - FROSTED OVALS */
-.key-btn {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+.key-unit {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--ice-border);
     border-radius: 50px;
-    color: var(--pure-white);
-    font-size: 1.5rem;
+    height: 75px;
     display: flex;
     align-items: center;
     justify-content: center;
-    aspect-ratio: 1.8 / 1;
+    font-size: 1.6rem;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
 }
 
-.key-btn::after {
-    content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
-    opacity: 0; transition: opacity 0.3s; transform: scale(0.5);
+.key-unit::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: 0.5s;
 }
 
-.key-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--ice-blue); box-shadow: 0 0 20px rgba(174, 228, 255, 0.3); }
-.key-btn:active::after { opacity: 1; transform: scale(2); transition: 0s; }
-.key-btn:active { transform: scale(0.95); }
-
-/* DASHBOARD LAYOUT */
-.main-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px; padding: 30px; height: calc(100vh - 100px); box-sizing: border-box; }
-.hero-box { padding: 50px; display: flex; justify-content: space-between; align-items: center; border-radius: 40px; }
-#big-temp { font-size: 11rem; font-weight: 200; margin: 10px 0; letter-spacing: -5px; }
-
-.stat-row {
-    display: flex; justify-content: space-between; padding: 25px 30px;
-    border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 1.1rem;
+.key-unit:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    box-shadow: var(--arctic-glow);
+    transform: translateY(-3px);
 }
-.stat-row:last-child { border-bottom: none; }
 
-/* 3D ICON CONTAINER */
-.icon-3d {
-    width: 250px; height: 250px;
-    perspective: 1000px;
-    transform-style: preserve-3d;
-    animation: float 6s ease-in-out infinite;
+.key-unit:hover::after { transform: translateX(100%); }
+
+.key-unit:active { transform: scale(0.92) translateY(0); background: #fff; color: #000; }
+
+/* DASHBOARD COMPONENTS */
+.header-glass {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 50px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(25px);
+    border-bottom: 1px solid var(--ice-border);
 }
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotateX(5deg) rotateY(-5deg); }
-    50% { transform: translateY(-20px) rotateX(-5deg) rotateY(5deg); }
+
+.search-frost {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--ice-border);
+    border-radius: 30px;
+    padding: 12px 30px;
+    color: #fff;
+    width: 400px;
+    outline: none;
+    transition: 0.3s;
 }
+
+.search-frost:focus { box-shadow: var(--arctic-glow); width: 450px; }
