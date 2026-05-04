@@ -3,6 +3,5 @@ const CONFIG = {
     DEFAULT_CITY: 'Chicago',
     LAT: 41.8781,
     LON: -87.6230,
-    OFFICE: 'LOT',
     PASSCODE: '2014'
 };
