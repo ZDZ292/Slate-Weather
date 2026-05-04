@@ -1,7 +1,7 @@
 const CONFIG = {
     WEATHER_API_KEY: '3448f220268541c491e161543242604',
-    LAT: 41.9742,
-    LON: -87.9073,
-    OFFICE: 'LOT',
+    LAT: 42.0451, // Evanston, IL
+    LON: -87.6877,
+    OFFICE: 'LOT', 
     PASSCODE: '2014'
 };
