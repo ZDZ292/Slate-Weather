@@ -1,63 +1,44 @@
-let input = "";
+let inputBuffer = "";
 const keypad = document.getElementById('keypad');
 
-function setupKeypad() {
-    [1,2,3,4,5,6,7,8,9,'C',0,'OK'].forEach(key => {
-        const btn = document.createElement('div');
-        btn.className = 'key-btn';
-        btn.innerText = key;
-        
-        btn.onpointerdown = (e) => {
+function initAuth() {
+    [1,2,3,4,5,6,7,8,9,'C',0,'OK'].forEach(val => {
+        const key = document.createElement('div');
+        key.className = 'key-unit';
+        key.innerText = val;
+        key.onpointerdown = (e) => {
             e.preventDefault();
-            createRipple(e, btn);
-            handleKey(key);
+            processInput(val);
         };
-        keypad.appendChild(btn);
+        keypad.appendChild(key);
     });
 }
 
-function createRipple(event, button) {
-    const circle = document.createElement('span');
-    const diameter = Math.max(button.clientWidth, button.clientHeight);
-    const radius = diameter / 2;
-
-    const rect = button.getBoundingClientRect();
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${event.clientX - rect.left - radius}px`;
-    circle.style.top = `${event.clientY - rect.top - radius}px`;
-    circle.classList.add('ripple');
-
-    const ripple = button.getElementsByClassName('ripple')[0];
-    if (ripple) { ripple.remove(); }
-    button.appendChild(circle);
-}
-
 window.addEventListener('keydown', (e) => {
-    if (e.key >= 0 && e.key <= 9) handleKey(e.key);
-    if (e.key === 'Enter') handleKey('OK');
-    if (e.key === 'Backspace') handleKey('C');
+    if (e.key >= 0 && e.key <= 9) processInput(e.key);
+    if (e.key === 'Enter') processInput('OK');
+    if (e.key === 'Backspace') processInput('C');
 });
 
-function handleKey(v) {
-    if (v === 'C') input = "";
+function processInput(v) {
+    if (v === 'C') inputBuffer = "";
     else if (v === 'OK') {
-        if (input === CONFIG.PASSCODE) unlock();
-        else input = "";
-    } else if (input.length < 4) {
-        input += v;
+        if (inputBuffer === CONFIG.PASSCODE) {
+            document.getElementById('lock-screen').style.transition = '1.2s cubic-bezier(0.8, 0, 0.2, 1)';
+            document.getElementById('lock-screen').style.opacity = '0';
+            document.getElementById('lock-screen').style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                document.getElementById('lock-screen').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                bootDashboard();
+            }, 1000);
+        } else {
+            inputBuffer = "";
+        }
+    } else if (inputBuffer.length < 4) {
+        inputBuffer += v;
     }
-    document.getElementById('pin-display').innerText = ".".repeat(input.length) || "....";
+    document.getElementById('pin-view').innerText = ".".repeat(inputBuffer.length) || "....";
 }
 
-function unlock() {
-    const lockScreen = document.getElementById('lock-screen');
-    lockScreen.style.opacity = '0';
-    lockScreen.style.backdropFilter = 'blur(0px)';
-    setTimeout(() => {
-        lockScreen.classList.add('hidden');
-        document.getElementById('app').classList.remove('hidden');
-        // initWeather() would trigger here
-    }, 800);
-}
-
-setupKeypad();
+initAuth();
