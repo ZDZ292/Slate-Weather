@@ -2,62 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SlateWeather PRO</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- EXTREME LIQUID GLASS LOCK -->
-    <div id="lock-screen">
-        <div class="ice-panel">
-            <h1 class="orbitron">SLATE<span class="neon">WEATHER</span></h1>
-            <div id="pin-dots">....</div>
-            <div class="keypad" id="keypad"></div>
+
+    <!-- AMBIENT LIQUID BACKGROUND -->
+    <div class="liquid-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- LOCK SCREEN -->
+    <div id="lock-screen" class="overlay">
+        <div class="frosted-glass lock-panel">
+            <h1 class="orbitron title">SLATE<span class="neon">WEATHER</span></h1>
+            <div id="pin-display" class="pin-dots">....</div>
+            <div id="keypad" class="keypad-grid"></div>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- MAIN INTERFACE -->
     <div id="app" class="hidden">
-        <header class="glass-nav">
+        <header class="frosted-glass top-nav">
             <div class="logo orbitron">SLATE<span class="neon">WEATHER</span></div>
-            <div class="search-bar">
-                <input type="text" id="city-input" placeholder="SEARCH CITY...">
+            <div class="search-wrap">
+                <input type="text" id="city-search" class="frosted-input" placeholder="SEARCH CITY...">
             </div>
-            <nav>
-                <button onclick="tab('curr')" class="t-btn active">CURRENT</button>
-                <button onclick="tab('spc')" class="t-btn">SPC</button>
-                <button onclick="tab('mcd')" class="t-btn">MESO</button>
-                <button onclick="tab('14d')" class="t-btn">14-DAY</button>
-                <button onclick="tab('72h')" class="t-btn">72-HR</button>
+            <nav class="nav-links">
+                <button class="nav-btn active">CURRENT</button>
+                <button class="nav-btn">SPC</button>
+                <button class="nav-btn">MESO</button>
+                <button class="nav-btn">14-DAY</button>
             </nav>
         </header>
 
-        <main>
-            <section id="v-curr" class="page active">
-                <div class="hero-glass">
-                    <div id="main-icon"></div>
-                    <h1 id="temp-display">--°</h1>
-                    <div id="condition-text">INITIALIZING...</div>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-card"><span>PRECIP</span><b id="p-val">0.0"</b></div>
-                    <div class="stat-card"><span>WIND</span><b id="w-val">--</b></div>
-                    <div class="stat-card"><span>HUMID</span><b id="h-val">--</b></div>
+        <main class="main-layout">
+            <section class="frosted-glass hero-widget">
+                <div class="hero-data">
+                    <h2 class="orbitron neon">CHICAGO, IL</h2>
+                    <p class="status-text">SYSTEM ACTIVE</p>
+                    <h1 class="giant-temp">--°</h1>
                 </div>
             </section>
-            <section id="v-spc" class="page"><div id="spc-feed"></div></section>
-            <section id="v-mcd" class="page"><div class="terminal" id="mcd-feed"></div></section>
-            <section id="v-14d" class="page"><div class="grid" id="f-14d"></div></section>
-            <section id="v-72h" class="page"><div class="grid" id="f-72h"></div></section>
+
+            <section class="metrics-grid">
+                <div class="frosted-glass metric-card">
+                    <span class="label">PRECIP</span>
+                    <span class="value" id="val-prec">0.00"</span>
+                </div>
+                <div class="frosted-glass metric-card">
+                    <span class="label">WIND</span>
+                    <span class="value" id="val-wind">-- MPH</span>
+                </div>
+                <div class="frosted-glass metric-card">
+                    <span class="label">HUMIDITY</span>
+                    <span class="value" id="val-hum">--%</span>
+                </div>
+            </section>
         </main>
     </div>
 
     <script src="config.js"></script>
-    <script src="icons.js"></script>
     <script src="auth.js"></script>
-    <script src="spc.js"></script>
-    <script src="nws.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
