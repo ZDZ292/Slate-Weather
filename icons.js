@@ -1,18 +1,9 @@
 const SlateIcons = {
-    getLiquidIcon: (condition) => {
+    getIcon: (condition) => {
         const c = condition.toLowerCase();
-        if (c.includes('storm') || c.includes('lightning')) return `
-            <svg class="liquid-svg" viewBox="0 0 100 100">
-                <defs><filter id="glow"><feGaussianBlur stdDeviation="2.5" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-                <path class="cloud-glass" d="M25 60 Q25 40 45 40 Q50 25 70 30 Q85 35 85 55 A15 15 0 0 1 70 75 H35 A15 15 0 0 1 25 60" fill="rgba(255,255,255,0.1)" stroke="rgba(0,255,0,0.5)" />
-                <path class="bolt-anim" d="M50 45 L40 70 H55 L45 95" fill="none" stroke="#00ff00" stroke-width="3" filter="url(#glow)" />
-            </svg>`;
-        if (c.includes('rain')) return `
-            <svg class="liquid-svg" viewBox="0 0 100 100">
-                <path class="cloud-glass" d="M25 60 Q25 40 45 40 Q50 25 70 30 Q85 35 85 55 A15 15 0 0 1 70 75 H35 A15 15 0 0 1 25 60" fill="rgba(255,255,255,0.1)" stroke="#00ff00" />
-                <line class="rain-drop" x1="40" y1="75" x2="35" y2="85" stroke="#00ff00" stroke-width="2" />
-                <line class="rain-drop" x1="55" y1="80" x2="50" y2="90" stroke="#00ff00" stroke-width="2" />
-            </svg>`;
-        return `<svg class="liquid-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="rgba(0,255,0,0.2)" stroke="#00ff00" stroke-width="2" filter="url(#glow)"/></svg>`;
+        let color = "#00ff6a";
+        if (c.includes("rain")) return `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" class="glass-svg"><path d="M8 19v2M12 19v2M16 19v2M20 16.5a4 4 0 00-4-4 4 4 0 00-7.5-1.5 5 5 0 101.5 9.5h10a4 4 0 000-8z"/></svg>`;
+        if (c.includes("cloud")) return `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" class="glass-svg"><path d="M20 16.5a4 4 0 00-4-4 4 4 0 00-7.5-1.5 5 5 0 101.5 9.5h10a4 4 0 000-8z"/></svg>`;
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" class="glass-svg"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
     }
 };
