@@ -2,60 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SLATE WEATHER</title>
+    <title>SlateWeather PRO</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="slate-dark">
+
     <div id="lock-screen" class="active">
-        <div class="scanline"></div>
-        <div class="lock-content">
-            <h2 class="orbitron">SLATE SYSTEM</h2>
-            <div id="pin-view">••••</div>
-            <div class="numpad" id="numpad"></div>
+        <div class="glass-orb"></div>
+        <div class="lock-panel liquid-glass">
+            <h2 class="orbitron neon-text">SLATE SECURE</h2>
+            <div id="pin-display" class="pin-status">READY</div>
+            <div class="pin-grid" id="numpad"></div>
         </div>
     </div>
 
-    <div id="app" class="hidden">
-        <header>
-            <div class="slate-logo orbitron">
-                <div class="sun-merge"></div> SLATE <span class="green">WEATHER</span>
+    <div id="dashboard" class="hidden">
+        <header class="main-header liquid-glass">
+            <div class="brand">
+                <div class="slate-logo">
+                    <div class="sun-core"></div>
+                    <span class="orbitron">SLATE<span class="green">WEATHER</span></span>
+                </div>
             </div>
-            <nav>
-                <button onclick="switchTab('current')" class="t-btn active">CURRENT</button>
-                <button onclick="switchTab('spc')" class="t-btn">SPC OUTLOOK</button>
-                <button onclick="switchTab('mcd')" class="t-btn">MESOSCALE</button>
-                <button onclick="switchTab('14day')" class="t-btn">14-DAY</button>
-                <button onclick="switchTab('72hr')" class="t-btn">72-HR</button>
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="city-search" placeholder="Search City or Coordinates...">
+            </div>
+            <nav class="tab-nav">
+                <button onclick="showTab('current')" class="active">CURRENT</button>
+                <button onclick="showTab('spc')">SPC</button>
+                <button onclick="showTab('mcd')">MESOSCALE</button>
+                <button onclick="showTab('forecast-14')">14-DAY</button>
+                <button onclick="showTab('hourly-72')">72-HOUR</button>
             </nav>
         </header>
 
-        <main>
-            <section id="current" class="tab active">
-                <div class="live-hero">
-                    <div id="big-icon"></div>
-                    <h1 id="main-temp">--°</h1>
-                    <div class="precip-stats">
-                        SNOW: <span id="snow-val">0.0"</span> RAIN: <span id="rain-val">0.0"</span>
+        <main class="content-area">
+            <section id="current" class="tab-pane active">
+                <div class="hero-card liquid-glass">
+                    <div class="hero-main">
+                        <div id="hero-icon" class="main-anim-icon"></div>
+                        <div class="temp-wrap">
+                            <h1 id="curr-temp" class="orbitron">--</h1>
+                            <span class="unit-big">°F</span>
+                        </div>
+                        <p id="curr-cond" class="cond-label">SCANNING ATMOSPHERE...</p>
+                    </div>
+                    <div class="live-metrics">
+                        <div class="metric"><label>SNOW</label><b id="snow-in">0.0"</b></div>
+                        <div class="metric"><label>RAIN</label><b id="rain-in">0.0"</b></div>
+                        <div class="metric"><label>FEELS</label><b id="feels-f">--°</b></div>
                     </div>
                 </div>
-                <div class="alert-box">
-                    <h3 class="orbitron">LIVE ALERTS</h3>
-                    <div id="alert-feed">SCANNING FOR THREATS...</div>
+                <div class="alert-ticker liquid-glass">
+                    <div class="ticker-header"><i class="fa-solid fa-triangle-exclamation"></i> LIVE ALERTS</div>
+                    <div id="alert-list" class="ticker-content">No active threats detected.</div>
                 </div>
             </section>
 
-            <section id="spc" class="tab">
-                <div class="spc-container" id="spc-list"></div>
+            <section id="spc" class="tab-pane">
+                <div class="spc-layout" id="spc-view"></div>
             </section>
 
-            <section id="mcd" class="tab">
-                <div class="terminal" id="mcd-content">INITIALIZING CONNECTION TO NWS...</div>
+            <section id="mcd" class="tab-pane">
+                <div class="mcd-terminal liquid-glass" id="mcd-text">CONNECTING TO SPC SERVER...</div>
             </section>
 
-            <section id="14day" class="tab"><div class="grid" id="long-range"></div></section>
-            <section id="72hr" class="tab"><div class="grid" id="hourly-72"></div></section>
+            <section id="forecast-14" class="tab-pane">
+                <div class="grid-14" id="forecast-grid"></div>
+            </section>
+
+            <section id="hourly-72" class="tab-pane">
+                <div class="hourly-scroll liquid-glass" id="hourly-view"></div>
+            </section>
         </main>
+        <footer class="footer-legal">POWERED BY SLATE_CORE v3.0 • PRO DATA FEED ACTIVE</footer>
     </div>
 
     <script src="config.js"></script>
