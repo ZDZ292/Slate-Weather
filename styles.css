@@ -1,59 +1,125 @@
 :root {
-    --ice: rgba(255, 255, 255, 0.08);
-    --border: rgba(255, 255, 255, 0.15);
     --neon: #00ff6a;
-    --bg: #030705;
+    --neon-glow: 0 0 20px rgba(0, 255, 106, 0.6);
+    --glass-bg: rgba(10, 25, 20, 0.25);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-edge: rgba(255, 255, 255, 0.25);
 }
 
+* { box-sizing: border-box; }
+
 body {
-    background: var(--bg); color: #fff; margin: 0;
-    font-family: 'Inter', sans-serif; overflow: hidden;
-    background-image: radial-gradient(circle at 50% 0%, #0a1f16 0%, #000 100%);
+    margin: 0;
+    height: 100vh;
+    background-color: #020604;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
 }
 
 .orbitron { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-.neon { color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-.hidden { display: none; }
+.neon { color: var(--neon); text-shadow: var(--neon-glow); }
+.hidden { display: none !important; }
 
-/* LOCK SCREEN PANEL */
-#lock-screen {
-    position: fixed; inset: 0; z-index: 100;
+/* AMBIENT LIQUID BACKGROUND ANIMATION */
+.liquid-bg {
+    position: fixed; inset: 0; z-index: -1;
+    overflow: hidden; filter: blur(60px);
+}
+.orb {
+    position: absolute; border-radius: 50%;
+    animation: float 15s infinite ease-in-out alternate;
+}
+.orb-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0, 255, 106, 0.15), transparent 70%);
+    top: -100px; left: -100px;
+}
+.orb-2 {
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(10, 50, 40, 0.4), transparent 70%);
+    bottom: -200px; right: -100px;
+    animation-delay: -5s;
+}
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(100px, 50px) scale(1.2); }
+}
+
+/* EXTREME FROSTED GLASS CORE CLASS */
+.frosted-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1px solid var(--glass-border);
+    /* Directional edge lighting for thick glass effect */
+    border-top: 1px solid var(--glass-edge);
+    border-left: 1px solid var(--glass-edge);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 255, 106, 0.05);
+}
+
+/* LOCK SCREEN */
+.overlay {
+    position: fixed; inset: 0; z-index: 999;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.6);
+    transition: opacity 0.8s ease, backdrop-filter 0.8s ease;
 }
-.ice-panel {
-    background: var(--ice); backdrop-filter: blur(30px) saturate(150%);
-    border: 1px solid var(--border); border-radius: 40px;
-    padding: 50px; text-align: center; width: 380px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+.lock-panel {
+    padding: 60px; border-radius: 40px; width: 420px; text-align: center;
+    animation: glassFloat 6s infinite ease-in-out alternate;
 }
-
-/* KEYPAD */
-.keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px; }
-.keypad button {
-    aspect-ratio: 1.5/1; border-radius: 50px; border: 1px solid var(--border);
-    background: rgba(255,255,255,0.03); color: #fff; font-size: 1.2rem;
-    cursor: pointer; transition: 0.2s; touch-action: manipulation;
-}
-.keypad button:active { background: var(--neon); color: #000; transform: scale(0.95); }
-
-/* DASHBOARD */
-.glass-nav {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 20px 40px; background: rgba(0,0,0,0.3); backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-}
-.search-bar input {
-    background: var(--ice); border: 1px solid var(--border); border-radius: 20px;
-    padding: 10px 20px; color: #fff; width: 250px; outline: none;
+@keyframes glassFloat {
+    0% { transform: translateY(-5px); }
+    100% { transform: translateY(5px); }
 }
 
-.stat-card {
-    background: var(--ice); backdrop-filter: blur(15px);
-    border: 1px solid var(--border); padding: 25px; border-radius: 20px;
-    display: flex; justify-content: space-between; align-items: center;
+.title { font-size: 2rem; margin-top: 0; }
+.pin-dots { font-size: 3rem; letter-spacing: 10px; color: var(--neon); margin-bottom: 30px; line-height: 1; text-shadow: var(--neon-glow); }
+
+/* LIQUID KEYPAD */
+.keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.key-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 40px; color: #fff; font-size: 1.5rem;
+    aspect-ratio: 1.5 / 1; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative; overflow: hidden;
+}
+.key-btn:hover {
+    background: rgba(0, 255, 106, 0.1); border-color: var(--neon); box-shadow: var(--neon-glow);
+}
+.key-btn:active { transform: scale(0.9); }
+
+/* RIPPLE EFFECT */
+.ripple {
+    position: absolute; border-radius: 50%; background: rgba(0, 255, 106, 0.5);
+    transform: scale(0); animation: rippleAnim 0.6s linear; pointer-events: none;
+}
+@keyframes rippleAnim {
+    to { transform: scale(4); opacity: 0; }
 }
 
-.page { display: none; padding: 40px; animation: fadeIn 0.4s ease; }
-.page.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* DASHBOARD LAYOUT */
+.top-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-radius: 0 0 30px 30px; margin-bottom: 40px; }
+.logo { font-size: 1.5rem; }
+.frosted-input {
+    background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(0, 0, 0, 0.8); /* Inset shadow effect */
+    color: #fff; padding: 12px 25px; border-radius: 30px; width: 400px; outline: none;
+}
+.nav-links { display: flex; gap: 15px; }
+.nav-btn { background: none; border: none; color: #aaa; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s; padding: 10px; }
+.nav-btn.active, .nav-btn:hover { color: var(--neon); text-shadow: var(--neon-glow); }
+
+.main-layout { padding: 0 40px; display: flex; flex-direction: column; gap: 30px; }
+.hero-widget { padding: 50px; border-radius: 30px; }
+.giant-temp { font-size: 8rem; margin: 10px 0 0 0; font-weight: 200; }
+.status-text { color: #888; letter-spacing: 2px; }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.metric-card { padding: 30px; border-radius: 20px; display: flex; flex-direction: column; gap: 10px; }
+.metric-card .label { color: #aaa; font-size: 0.9rem; letter-spacing: 1px; }
+.metric-card .value { font-size: 2rem; font-weight: 600; color: var(--neon); }
