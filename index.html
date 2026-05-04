@@ -2,83 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SlateWeather PRO</title>
+    <title>SlateWeather | Chicago</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="slate-dark">
+<body>
 
     <div id="lock-screen" class="active">
         <div class="glass-orb"></div>
-        <div class="lock-panel liquid-glass">
-            <h2 class="orbitron neon-text">SLATE SECURE</h2>
-            <div id="pin-display" class="pin-status">READY</div>
-            <div class="pin-grid" id="numpad"></div>
+        <div class="lock-panel">
+            <h1 class="orbitron">SLATE<span class="green">WEATHER</span></h1>
+            <div id="pin-display"></div>
+            <div class="glass-keypad" id="keypad"></div>
         </div>
     </div>
 
-    <div id="dashboard" class="hidden">
-        <header class="main-header liquid-glass">
+    <div id="main-ui" class="hidden">
+        <header class="glass-header">
             <div class="brand">
-                <div class="slate-logo">
-                    <div class="sun-core"></div>
-                    <span class="orbitron">SLATE<span class="green">WEATHER</span></span>
-                </div>
+                <div class="sun-logo"></div>
+                <span class="orbitron">SLATE<span class="green">WEATHER</span></span>
             </div>
             <div class="search-container">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="city-search" placeholder="Search City or Coordinates...">
+                <input type="text" id="city-search" placeholder="Search City (e.g. Chicago)...">
             </div>
-            <nav class="tab-nav">
-                <button onclick="showTab('current')" class="active">CURRENT</button>
-                <button onclick="showTab('spc')">SPC</button>
-                <button onclick="showTab('mcd')">MESOSCALE</button>
-                <button onclick="showTab('forecast-14')">14-DAY</button>
-                <button onclick="showTab('hourly-72')">72-HOUR</button>
+            <nav class="glass-tabs">
+                <button onclick="tab('curr')" class="tab-btn active">CURRENT</button>
+                <button onclick="tab('spc')" class="tab-btn">SPC</button>
+                <button onclick="tab('mcd')" class="tab-btn">MESO</button>
+                <button onclick="tab('14d')" class="tab-btn">14-DAY</button>
+                <button onclick="tab('72h')" class="tab-btn">72-HR</button>
             </nav>
         </header>
 
-        <main class="content-area">
-            <section id="current" class="tab-pane active">
-                <div class="hero-card liquid-glass">
-                    <div class="hero-main">
-                        <div id="hero-icon" class="main-anim-icon"></div>
-                        <div class="temp-wrap">
-                            <h1 id="curr-temp" class="orbitron">--</h1>
-                            <span class="unit-big">°F</span>
-                        </div>
-                        <p id="curr-cond" class="cond-label">SCANNING ATMOSPHERE...</p>
+        <main class="liquid-viewport">
+            <!-- Current Section -->
+            <section id="view-curr" class="glass-view active">
+                <div class="hero-layout">
+                    <div class="main-stats">
+                        <div id="hero-icon"></div>
+                        <h1 id="hero-temp">--°</h1>
+                        <p id="hero-desc">INITIALIZING...</p>
                     </div>
-                    <div class="live-metrics">
-                        <div class="metric"><label>SNOW</label><b id="snow-in">0.0"</b></div>
-                        <div class="metric"><label>RAIN</label><b id="rain-in">0.0"</b></div>
-                        <div class="metric"><label>FEELS</label><b id="feels-f">--°</b></div>
+                    <div class="side-metrics">
+                        <div class="metric-glass"><span>PRECIP</span><b id="m-precip">0.0"</b></div>
+                        <div class="metric-glass"><span>WIND</span><b id="m-wind">-- mph</b></div>
+                        <div class="metric-glass"><span>HUMIDITY</span><b id="m-hum">--%</b></div>
                     </div>
                 </div>
-                <div class="alert-ticker liquid-glass">
-                    <div class="ticker-header"><i class="fa-solid fa-triangle-exclamation"></i> LIVE ALERTS</div>
-                    <div id="alert-list" class="ticker-content">No active threats detected.</div>
+                <div class="alert-glass-row">
+                    <h3><i class="fa-solid fa-triangle-exclamation"></i> LIVE ALERTS</h3>
+                    <div id="alert-stream">No active threats detected for Chicago.</div>
                 </div>
             </section>
 
-            <section id="spc" class="tab-pane">
-                <div class="spc-layout" id="spc-view"></div>
+            <!-- SPC Section -->
+            <section id="view-spc" class="glass-view">
+                <div class="spc-grid" id="spc-display"></div>
             </section>
 
-            <section id="mcd" class="tab-pane">
-                <div class="mcd-terminal liquid-glass" id="mcd-text">CONNECTING TO SPC SERVER...</div>
+            <!-- Mesoscale Section -->
+            <section id="view-mcd" class="glass-view">
+                <div class="terminal-glass" id="mcd-log">Connecting to NWS Mesoscale Feed...</div>
             </section>
 
-            <section id="forecast-14" class="tab-pane">
-                <div class="grid-14" id="forecast-grid"></div>
-            </section>
-
-            <section id="hourly-72" class="tab-pane">
-                <div class="hourly-scroll liquid-glass" id="hourly-view"></div>
-            </section>
+            <!-- Forecast Sections -->
+            <section id="view-14d" class="glass-view"><div class="flex-grid" id="list-14d"></div></section>
+            <section id="view-72h" class="glass-view"><div class="flex-grid" id="list-72h"></div></section>
         </main>
-        <footer class="footer-legal">POWERED BY SLATE_CORE v3.0 • PRO DATA FEED ACTIVE</footer>
     </div>
 
     <script src="config.js"></script>
