@@ -1,33 +1,40 @@
-let currentInput = "";
-const pad = document.getElementById('numpad');
+let inputBuffer = "";
+const PIN = CONFIG.PASSCODE;
 
-// Generate Buttons
-[1,2,3,4,5,6,7,8,9,'CLR',0,'ENT'].forEach(key => {
-    const b = document.createElement('button');
-    b.innerText = key;
-    b.onclick = () => handlePress(key);
-    pad.appendChild(b);
-});
-
-// Keyboard listener
-window.addEventListener('keydown', (e) => {
-    if (e.key >= 0 && e.key <= 9) handlePress(e.key);
-    if (e.key === 'Enter') handlePress('ENT');
-    if (e.key === 'Backspace') handlePress('CLR');
-});
-
-function handlePress(k) {
-    if (k === 'CLR') currentInput = "";
-    else if (k === 'ENT') {
-        if (currentInput === CONFIG.PASSCODE) {
-            document.getElementById('lock-screen').classList.add('hidden');
-            document.getElementById('app').classList.remove('hidden');
-            initApp();
-        } else {
-            currentInput = "";
-        }
-    } else if (currentInput.length < 4) {
-        currentInput += k;
-    }
-    document.getElementById('pin-view').innerText = "•".repeat(currentInput.length) || "••••";
+function setupKeypad() {
+    const pad = document.getElementById('keypad');
+    [1,2,3,4,5,6,7,8,9,'C',0,'OK'].forEach(k => {
+        const b = document.createElement('button');
+        b.innerText = k;
+        b.onclick = () => handleInput(k);
+        pad.appendChild(b);
+    });
 }
+
+window.addEventListener('keydown', (e) => {
+    if (e.key >= 0 && e.key <= 9) handleInput(e.key);
+    if (e.key === 'Enter') handleInput('OK');
+    if (e.key === 'Backspace') handleInput('C');
+});
+
+function handleInput(v) {
+    if (v === 'C') inputBuffer = "";
+    else if (v === 'OK') {
+        if (inputBuffer === PIN) unlock();
+        else { inputBuffer = ""; triggerError(); }
+    } else if (inputBuffer.length < 4) {
+        inputBuffer += v;
+    }
+    document.getElementById('pin-display').innerText = "•".repeat(inputBuffer.length);
+}
+
+function unlock() {
+    document.getElementById('lock-screen').style.transform = "translateY(-100%)";
+    setTimeout(() => {
+        document.getElementById('lock-screen').classList.add('hidden');
+        document.getElementById('main-ui').classList.remove('hidden');
+        initDashboard();
+    }, 6000);
+}
+
+setupKeypad();
