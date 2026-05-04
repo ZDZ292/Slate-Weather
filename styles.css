@@ -1,66 +1,84 @@
 :root {
-    --frost: rgba(200, 225, 255, 0.1);
-    --ice-border: rgba(255, 255, 255, 0.3);
-    --text-glow: 0 0 15px rgba(255, 255, 255, 0.5);
+    --black: #000000;
+    --dark-grey: #121212;
+    --accent: #00ffcc;
+    --text: #ffffff;
+    --border: #222222;
 }
 
-body, html {
-    margin: 0; padding: 0; height: 100vh; width: 100vw;
-    font-family: 'Inter', sans-serif; color: #fff; overflow: hidden;
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--black);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* 4K BACKDROPS */
-#lock-screen {
-    background: url('https://images.unsplash.com/photo-1478265409131-1f65c88f965c?auto=format&fit=crop&q=80&w=3840') no-repeat center center/cover;
+#dynamic-backdrop {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 1s ease-in-out;
+    filter: brightness(0.3) contrast(1.2);
 }
 
-#app {
-    background: url('https://images.unsplash.com/photo-1561484930-998b6a7b22e8?auto=format&fit=crop&q=80&w=3840') no-repeat center center/cover;
+.main-console {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
-/* LIQUID GLASS PANELS */
-.extreme-glass {
-    background: var(--frost);
-    backdrop-filter: blur(50px) saturate(150%);
-    -webkit-backdrop-filter: blur(50px);
-    border: 1px solid var(--ice-border);
-    border-radius: 40px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+.search-header {
+    background: var(--dark-grey);
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
 }
 
-/* KEYPAD ANIMATION */
-.key-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--ice-border);
-    border-radius: 50%;
-    aspect-ratio: 1;
+#city-input {
+    background: #000;
+    border: 1px solid var(--border);
     color: #fff;
-    font-size: 1.5rem;
+    padding: 8px;
+    flex-grow: 1;
+}
+
+.smart-bar {
+    display: flex;
+    background: var(--dark-grey);
+    overflow-x: auto;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    background: none;
+    border: none;
+    color: #888;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: bold;
+    border-bottom: 2px solid transparent;
 }
 
-.key-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1) translateY(-5px);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+.tab-btn.active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    background: #1a1a1a;
 }
 
-.key-btn:active {
-    transform: scale(0.9);
-    background: #fff;
-    color: #000;
+.content-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
 }
 
-/* 3D WEATHER ICON ANIMATION */
-.weather-3d {
-    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
-    animation: float 4s ease-in-out infinite;
-}
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(2deg); }
-}
-
-.hidden { display: none !important; }
+.current-hero { text-align: center; padding: 40px 0; }
+#main-temp { font-size: 5rem; margin: 10px 0; }
+.text-product { white-space: pre-wrap; font-family: monospace; background: #080808; padding: 15px; }
